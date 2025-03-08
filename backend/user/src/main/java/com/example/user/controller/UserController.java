@@ -11,10 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.user.model.User;
 import com.example.user.service.JwtService;
 import com.example.user.service.UserService;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
+@CrossOrigin("http://localhost:5173")
 public class UserController {
     private final UserService userService;
     private final JwtService jwtService;

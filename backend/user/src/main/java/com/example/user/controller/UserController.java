@@ -11,10 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.user.model.User;
 import com.example.user.service.JwtService;
 import com.example.user.service.UserService;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
@@ -33,14 +39,25 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody User user) {
+    public ResponseEntity<String> login(@RequestBody User user, HttpServletResponse response) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        if (authentication.isAuthenticated())
-            return new ResponseEntity<>(jwtService.generateToken(user.getUsername()),
-                    HttpStatus.OK);
-        else
-            return new ResponseEntity<>("Login failed", HttpStatus.BAD_REQUEST);
+        if (authentication.isAuthenticated()) {
+            // return new ResponseEntity<>(jwtService.generateToken(user.getUsername()),
+            // HttpStatus.OK);
+            String token = jwtService.generateToken(user.getUsername());
+            Cookie jwtCookie = new Cookie("jwt", token);
+            jwtCookie.setHttpOnly(true);// Prevent JavaScript access
+            jwtCookie.setSecure(false);// Set to true in production (HTTPS only)
+            jwtCookie.setPath("/");
+            jwtCookie.setMaxAge(259200);
+            response.addCookie(jwtCookie);
+            return ResponseEntity.ok("Login successful");
+        }
+
+        else {
+            return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+        }
 
     }
 

@@ -1,14 +1,12 @@
-import React, { use, useState } from 'react'
+import React from 'react'
 import axios from '../axios';
-import { useNavigate } from 'react-router-dom';
 
-export default function LoginPage() {
-    const navigate = useNavigate();
+export default function RegisterPage() {
     async function getToken(user){
         try {
-           const response = await axios.post("http://localhost:5000/login",user);
+           const response = await axios.post("http://localhost:5000/register",user);
            if(response.status == 200){
-            alert("login successful");
+            alert("Register successful");
            }
         } catch (error) {
             alert(error);
@@ -25,10 +23,6 @@ export default function LoginPage() {
         getToken(user);
         
     }
-
-    const handleClick = ()=>{
-        navigate("/register");    
-    }
   return (
     <form onSubmit={submit}>
         <div className='justify-between border-4 border-indigo-500'>
@@ -40,7 +34,6 @@ export default function LoginPage() {
             <input name="password" type='text' className='border-4 border-indigo-500'></input>
         </div>
         <button type='submit' className='rounded-xl bg-indigo-600 cursor-pointer'>Submit</button>
-        <p onClick={handleClick} className='cursor-pointer'>New user? Register here</p>
     </form>
   )
 }

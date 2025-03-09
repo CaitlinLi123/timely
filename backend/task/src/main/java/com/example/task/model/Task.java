@@ -1,5 +1,6 @@
 package com.example.task.model;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,8 +15,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private String title;
     private String description;
+    private String priority;
+    private String status;
+    @ElementCollection
+    private String username;
 }

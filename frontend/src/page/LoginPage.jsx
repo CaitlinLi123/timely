@@ -9,6 +9,7 @@ export default function LoginPage() {
            const response = await axios.post("http://localhost:5000/login",user);
            if(response.status == 200){
             alert("login successful");
+            navigate("/");
            }
         } catch (error) {
             alert(error);

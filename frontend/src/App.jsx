@@ -6,7 +6,8 @@ import LoginPage from './page/LoginPage'
 import RegisterPage from './page/RegisterPage'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // if not authenticated, then redirect to login page
+  // if it is, jump to homepage
 
   return (
    <BrowserRouter>

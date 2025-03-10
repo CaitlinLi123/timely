@@ -1,5 +1,7 @@
 package com.example.task.model;
 
+import java.util.Date;
+
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +23,7 @@ public class Task {
     private String description;
     private String priority;
     private String status;
+    private Date date;
     @ElementCollection
     private String username;
 }

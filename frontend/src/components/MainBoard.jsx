@@ -4,6 +4,7 @@ import BoardBar from './BoardBar'
 import { DataGrid } from '@mui/x-data-grid';
 import PriorityBoard from './PriorityBoard';
 import { todoContext } from '../page/HomePage';
+import axios from 'axios';
 
 export default function MainBoard() {
   // const columns = [
@@ -12,6 +13,16 @@ export default function MainBoard() {
   //   { field: 'status', headerName: 'Status', width: 150 },
   // ];
   const {setHigh,setLow,setMedium,low,medium,high} = useContext(todoContext);
+
+  useEffect(()=>{
+    axios.get("http://localhost:8000/task/todos/all")
+    .then(res=>{
+      console.log(res);
+    })
+    .catch((e)=>{
+      console.log(e);
+    })
+  },[])
 
    const samplehigh= [
           {

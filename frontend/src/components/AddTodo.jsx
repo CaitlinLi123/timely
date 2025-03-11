@@ -3,6 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function AddTodo() {
+    const {setHigh,setLow,setMedium} = useContext(todoContext);
   return (
     <div className='grid grid-cols-7'>
         <input className='col-span-2' type='text'/>

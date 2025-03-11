@@ -11,9 +11,9 @@ export default function MainBoard() {
   //   { field: 'type', headerName: 'Type', width: 150 },
   //   { field: 'status', headerName: 'Status', width: 150 },
   // ];
-  const {setHigh,setLow,setMedium} = useContext(todoContext);
+  const {setHigh,setLow,setMedium,low,medium,high} = useContext(todoContext);
 
-   const high= [
+   const samplehigh= [
           {
           "id":1,
           "type":"work",
@@ -23,7 +23,7 @@ export default function MainBoard() {
           "date":"Today"},
       ]
     
-      const medium= [
+      const samplemedium= [
         {
           "id":2,
           "type":"work",
@@ -33,7 +33,7 @@ export default function MainBoard() {
           "date":"Today"},
     ]
     
-    const low = [
+    const samplelow = [
       {
         "id":3,
         "type":"life",
@@ -44,9 +44,9 @@ export default function MainBoard() {
     ]
 
     useEffect(()=>{
-      setHigh(high);
-      setMedium(medium);
-      setLow(low);
+      setHigh(samplehigh);
+      setMedium(samplemedium);
+      setLow(samplelow);
     },[])
 
   return (

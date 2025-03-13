@@ -54,7 +54,7 @@ public class TaskService {
             dao.delete(taskFound);
             return new ResponseEntity<>("success", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("not found in db", HttpStatus.BAD_REQUEST);
         }
     }
 

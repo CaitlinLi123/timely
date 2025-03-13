@@ -3,7 +3,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Todo({todo}) {
-  const [status, setStatus] = useState(todo["status"]);
   const handleEditClick = ()=>{
     console.log("edit");
   }
@@ -15,7 +14,7 @@ export default function Todo({todo}) {
      <div className='col-span-2'>{todo.description}</div>
      <div className=''>{todo.priority}</div>
      <div className=''>{todo.type}</div>
-     <div className=''>{todo.date}</div>
+     <div className=''>{new Date(todo.date).toISOString().split('T')[0]}</div>
      <div className=''>{todo.status}</div>
      <div className=''>
       <button className='cursor-point' onClick={handleEditClick}>

@@ -64,4 +64,8 @@ public class TaskService {
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
+    public ResponseEntity<List<Task>> getToDoByUsername(String username) {
+        return new ResponseEntity<>(dao.findByUsername(username), HttpStatus.OK);
+    }
+
 }

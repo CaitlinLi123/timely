@@ -47,6 +47,11 @@ public class TaskController {
         return taskService.getAToDoById(id);
     }
 
+    @GetMapping("/todos/all/{username}")
+    public ResponseEntity<List<Task>> getTodosByUserName(@PathVariable String username) {
+        return taskService.getToDoByUsername(username);
+    }
+
     @GetMapping("/todos")
     public ResponseEntity<List<Task>> getTodos(@RequestParam int page, @RequestParam int limit) {
         return taskService.getTodos(page, limit);

@@ -14,4 +14,6 @@ public interface TaskDao extends JpaRepository<Task, Integer> {
     @Query(value = "SELECT * FROM task t WHERE t.id>:start LIMIT :limit", nativeQuery = true)
     List<Task> findByPage(int start, int limit);
 
+    List<Task> findByUsername(String username);
+
 }

@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [loading,setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const validate = () => {
     axios.get("http://localhost:5000/validate", { withCredentials: true })
       .then(res => {
         let username = res.data;
@@ -26,10 +26,12 @@ export const AuthProvider = ({ children }) => {
         navigate("/login");
       })
       .finally(()=>setLoading(false));
-  }, []);
+  }
+
+  useEffect(()=>{validate()}, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser,loading }}>
+    <AuthContext.Provider value={{ user, setUser,loading,validate }}>
       {children}
     </AuthContext.Provider>
   );

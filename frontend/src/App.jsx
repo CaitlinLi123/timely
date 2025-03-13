@@ -13,8 +13,8 @@ function App() {
 
   return (
     <BrowserRouter>    
-      <AuthProvider>
-       <Routes>
+    <AuthProvider>
+      <Routes>
     <Route index path="/" element={<HomePage />}></Route>
     <Route path="/login" element={<LoginPage />}></Route>
     <Route path="/register" element={<RegisterPage />}></Route>

@@ -4,15 +4,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { todoContext } from '../page/HomePage';
 import { useContext } from 'react';
 import axios from 'axios';
+import EditTodo from './EditTodo';
 
 export default function Todo({todo}) {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [edit,setEdit] = useState(false);
   const handleEditClick = ()=>{
-    console.log("edit");
+    setEdit(true);
   }
   const handleDeleteClick = ()=>{
     setConfirmDelete(true);
-   
   }
 
   const handleConfirmDeleteClick = ()=>{
@@ -38,7 +39,7 @@ export default function Todo({todo}) {
 
   return (
     <div className='grid grid-cols-7 w-full h-[30px]'>
-     <div className='col-span-2'>{todo.description}</div>
+      {edit? <EditTodo todo={todo} setTodos={setTodos}/> : <><div className='col-span-2'>{todo.description}</div>
      <div className=''>{todo.priority}</div>
      <div className=''>{todo.type}</div>
      <div className=''>{new Date(todo.date).toISOString().split('T')[0]}</div>
@@ -60,6 +61,9 @@ export default function Todo({todo}) {
           </div>
         </div>
       </div>
+      
+      </>}
+     
     </div>
   )
 }

@@ -5,9 +5,10 @@ import { useContext, useEffect, useState } from 'react';
 import { todoContext } from '../page/HomePage';
 import { useAuth } from '../AuthContext';
 import axios from 'axios';
+import EditTodo from './EditTodo';
 
-export default function AddTodo() {
-    const {setHigh,setLow,setMedium} = useContext(todoContext);
+export default function AddTodo({setShowAdd}) {
+    const {setTodos} = useContext(todoContext);
     const {user} = useAuth();
 
     const handleSubmit = ()=>{
@@ -25,9 +26,10 @@ export default function AddTodo() {
             "username":user
         }
         addNewTodo(newTodo);
-        priority === "high" ? setHigh(high=>[...high,newTodo]) :
-        priority === "medium" ? setMedium(medium=>[...medium,newTodo]) :
-        setLow(low => [...low,newTodo]);
+
+        setTodos(todos=>[...todos,newTodo]);
+        setShowAdd(false);
+        
     }
 
     const addNewTodo = (newTodo)=>{
@@ -71,7 +73,7 @@ export default function AddTodo() {
                 <DeleteIcon />
             </button>
         </div>
-        
+    
     </div>
   )
 }

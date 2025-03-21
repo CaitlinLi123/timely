@@ -29,7 +29,7 @@ export default function HomePage() {
       <AppNav />
       <BoardBar setShowAdd = {setShowAdd}/>
       {
-        showAdd?<AddTodo />:""
+        showAdd?<AddTodo setShowAdd = {setShowAdd}/>:""
       }
       {
           !loading&&user? <MainBoard user={user}/> : ""

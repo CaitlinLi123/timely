@@ -25,7 +25,7 @@ export default function AppNav() {
       <div className='col-span-5 justify-self-start  text-2xl'>To do list</div>
       {/* User Avatars: username's first letter */}
       <div className='justify-self-center flex items-center place-content-center gap-3'>
-        {loading == false ? <Avatar sx={{ bgcolor: deepPurple[500] }}>{user[0]}</Avatar>: 
+        {loading === false ? <Avatar sx={{ bgcolor: deepPurple[500] }}>{user[0]}</Avatar>: 
         <Avatar sx={{ bgcolor: deepPurple[500] }}></Avatar>}
         
         <button className='cursor-pointer ' onClick={handleLogout}>Log out?</button>

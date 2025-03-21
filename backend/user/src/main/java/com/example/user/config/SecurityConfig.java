@@ -18,8 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -54,7 +52,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request.requestMatchers("register", "login", "logout").permitAll()
                         .anyRequest().authenticated())
                 .logout(logout -> logout.disable())
-                .httpBasic(Customizer.withDefaults())
+                // .httpBasic(Customizer.withDefaults())
+                .httpBasic(basic -> basic.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

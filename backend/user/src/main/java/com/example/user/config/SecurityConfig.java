@@ -51,8 +51,9 @@ public class SecurityConfig {
                     return config;
                 }))
                 .csrf(customizer -> customizer.disable()) // disable csrf
-                .authorizeHttpRequests(request -> request.requestMatchers("register", "login").permitAll()
+                .authorizeHttpRequests(request -> request.requestMatchers("register", "login", "logout").permitAll()
                         .anyRequest().authenticated())
+                .logout(logout -> logout.disable())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

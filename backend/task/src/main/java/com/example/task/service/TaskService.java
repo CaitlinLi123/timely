@@ -54,7 +54,7 @@ public class TaskService {
             dao.delete(taskFound);
             return new ResponseEntity<>("success", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("not found in db", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -62,6 +62,10 @@ public class TaskService {
         int start = (page - 1) * limit;
         List<Task> tasks = dao.findByPage(start, limit);
         return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<Task>> getToDoByUsername(String username) {
+        return new ResponseEntity<>(dao.findByUsername(username), HttpStatus.OK);
     }
 
 }

@@ -1,14 +1,18 @@
 import React, { use, useState } from 'react'
 import axios from '../axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
 export default function LoginPage() {
     const navigate = useNavigate();
+    const {validate} = useAuth();
     async function getToken(user){
         try {
            const response = await axios.post("http://localhost:5000/login",user);
            if(response.status == 200){
             alert("login successful");
+            validate();
+            navigate("/");
            }
         } catch (error) {
             alert(error);

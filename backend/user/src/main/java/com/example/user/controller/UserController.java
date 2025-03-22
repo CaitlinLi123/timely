@@ -55,6 +55,7 @@ public class UserController {
             jwtCookie.setSecure(false);// Set to true in production (HTTPS only)
             jwtCookie.setPath("/");
             jwtCookie.setMaxAge(259200);
+            // jwtCookie.setAttribute("SameSite", "None");
             response.addCookie(jwtCookie);
             return ResponseEntity.ok("Login successful");
         }

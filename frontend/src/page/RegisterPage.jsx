@@ -4,7 +4,7 @@ import axios from '../axios';
 export default function RegisterPage() {
     async function getToken(user){
         try {
-           const response = await axios.post("http://localhost:5000/register",user);
+            const response = await axios.post("http://localhost:5000/register", user);
            if(response.status == 200){
             alert("Register successful");
            }

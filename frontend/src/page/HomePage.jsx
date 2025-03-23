@@ -4,36 +4,95 @@ import AppNav from "../components/AppNav";
 import BoardBar from '../components/BoardBar';
 import Footer from '../components/Footer';
 import AddTodo from '../components/AddTodo';
-import { useContext,createContext } from 'react';
+import { createContext } from 'react';
 import { useAuth } from '../AuthContext';
 
 export const todoContext = createContext();
 
 export default function HomePage() {
   const {loading,user} = useAuth();
-  // backend will do the filtering
-  //  const [high,setHigh] = useState(null);
-  //  const [medium,setMedium] = useState(null);
-  //  const [low,setLow] = useState(null);
-   const [todos,setTodos] = useState(null);
+   const [todos,setTodos] = useState(
+    [
+      {
+        "description": "Implement authentication system",
+        "Progress": "To-Do",
+        "type": "Backend",
+        "priority": "High",
+        "date": "Mar 30"
+      },
+      {
+        "description": "Design homepage layout",
+        "status": "To-Do",
+        "type": "",
+        "priority": "Medium",
+        "date": ""
+      },
+      {
+        "description": "Set up CI/CD pipeline",
+        "status": "Doing",
+        "type": "DevOps",
+        "priority": "High",
+        "date": "Apr 5"
+      },
+      {
+        "description": "Write unit tests",
+        "status": "Doing",
+        "type": "",
+        "priority": "Medium",
+        "date": ""
+      },
+      {
+        "description": "Fix login page bug",
+        "status": "To-Do",
+        "type": "Bug",
+        "priority": "High",
+        "date": "Mar 28"
+      },
+      {
+        "description": "Update API documentation",
+        "status": "Done",
+        "type": "",
+        "priority": "Low",
+        "date": ""
+      },
+      {
+        "description": "Deploy application to production",
+        "Progress": "Done",
+        "type": "Release",
+        "priority": "High",
+        "date": "Mar 22"
+      }
+    ]
+   );
 
   const [showAdd, setShowAdd] = useState(false);
   return (
     <todoContext.Provider value={{
-      // high,setHigh,
-      // medium,setMedium,
-      // low,setLow,
       todos,setTodos
     }}>
-      <div className='flex flex-col p-5'>
+      <div className='fixed 
+      flex flex-col p-5 
+      bg-red-200 
+      h-full w-full'>
       <AppNav />
-      <BoardBar setShowAdd = {setShowAdd}/>
+      <div className='rounded-lg
+      h-full w-[4/5] bg-white
+      shadow-lg 
+      my-[10px]'>
+        <div id='mainboard_table' className='
+        w-[94%] mx-[3%] mt-[20px]
+      divide-y divide-gray-300  divide-opacity-100'>
+       <BoardBar setShowAdd = {setShowAdd}/>
       {
         showAdd?<AddTodo setShowAdd = {setShowAdd}/>:""
       }
       {
           !loading&&user? <MainBoard user={user}/> : ""
-      }
+      } 
+      </div>
+      
+      </div>
+      
     
       <Footer />
     </div>

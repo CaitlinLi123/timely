@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading,setLoading] = useState(true);
+  const [user, setUser] = useState("Admin");
+  const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
 
   const validate = () => {
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
       .finally(()=>setLoading(false));
   }
 
-  useEffect(()=>{validate()}, []);
+  // useEffect(()=>{validate()}, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser,loading,validate }}>

@@ -5,26 +5,30 @@ export default function BoardBar({setShowAdd}) {
   const handleClick = ()=>{
     setShowAdd(true);
   }
-  const handleSubmit = ()=>{
-    const emptyTodo =  {};
-    setTodos(todos=>[...todos,emptyTodo]);
-  }
+  // const handleSubmit = ()=>{
+  //   const emptyTodo =  {};
+  //   setTodos(todos=>[...todos,emptyTodo]);
+  // }
 
   return (
-    <div className='grid grid-cols-7 w-full divide-x text-lg'>
+    <div className='grid grid-cols-7 w-full  text-lg my-[5px] px-[3%] py-[5px]'>
       <div className='col-span-2'>Tasks</div>
       <div>Priority</div>
-      <div>Type</div>
-      
-      <div>Date</div>
       <div>Status</div>
-      <div onClick={handleClick}
-      className='
-      cursor-pointer 
-      justify-center'>
-      <Button variant="contained" onClick={handleClick}>
+      
+      <div>Labels</div>
+      <div>Due Date</div>
+      <div >
+      {/* <Button variant="contained" onClick={handleClick}>
         Add a Task
-      </Button>
+      </Button> */}
+      <button className='fixed left-[100px] bottom-[100px] shadow-md p-[4px] rounded-lg
+      bg-red-200
+      hover:outline-none hover:ring-2 hover:ring-red-300 hover:border-transparent
+      hover:bg-red-300 hover:text-white cursor-pointer' onClick={handleClick}
+     
+      >
+        +Add a task</button>
       </div>
     </div>
   )

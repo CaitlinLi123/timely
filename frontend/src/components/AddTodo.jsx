@@ -1,15 +1,19 @@
 import React from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { useContext, useEffect, useState } from 'react';
+import { useContext,  useState } from 'react';
 import { todoContext } from '../page/HomePage';
 import { useAuth } from '../AuthContext';
 import axios from 'axios';
-import EditTodo from './EditTodo';
 
 export default function AddTodo({setShowAdd}) {
     const {setTodos} = useContext(todoContext);
     const {user} = useAuth();
+    const [description, setDescription] = useState("");
+        const [priority, setPriority] = useState("");
+        const [type, setType] = useState("");
+        const [date, setDate] = useState(new Date(Date.now)); // Format for date input
+        const [status, setStatus] = useState("");
 
     const handleSubmit = ()=>{
         let description = document.getElementById("addtodo_description").value;
@@ -49,24 +53,36 @@ export default function AddTodo({setShowAdd}) {
         })
     }
   return (
-    <div className='grid grid-cols-7'>
-        <input className='col-span-2' type='text' id="addtodo_description" name='description'/>
-        <div>
-            <select name="priority" id="addtodo_priority">
+    <div className='grid grid-cols-7 px-[2%]'>
+        {/* description */}
+        <input className='col-span-2' value={description}
+        onChange={(e)=>{setDescription(e.target.value)}}
+        type='text' id="addtodo_description" name='description'/>
+        {/* priority */}
+            <select name="priority" id="addtodo_priority" value={priority}
+            onChange={(e)=>{setPriority(e.target.value)}}>
                 <option value="high">High</option>
                 <option value="medium">Medium</option>
                 <option value="low">Low</option>
             </select> 
-        </div>
-        <input type='text' id="addtodo_type" name='type'/>
-        <input type="date" id="addtodo_date" name='date'/>
-        <div>
-        <select name="status" id="addtodo_status">
+
+        {/* status */}
+        <select name="status" id="addtodo_status" value={status}
+         onChange={(e)=>{setStatus(e.target.value)}}
+        >
             <option value="pending">Pending</option>
             <option value="in_progress">In Progress</option>
             <option value="complete">Complete</option>
         </select> 
-        </div>
+        {/* labels/type */}
+        <input type='text' id="addtodo_type" name='type' value={type}
+         onChange={(e)=>{setType(e.target.value)}}
+        />
+        {/* due date */}
+        <input type="date" id="addtodo_date" name='date' value={date}
+         onChange={(e)=>{setDate(e.target.value)}}
+        />
+  
         <div>
         <button className='cursor-point' onClick={handleSubmit}>
                 <AddIcon />

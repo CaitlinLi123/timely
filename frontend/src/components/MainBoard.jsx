@@ -1,11 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect} from 'react'
 import Todo from './Todo'
-import BoardBar from './BoardBar'
-import { DataGrid } from '@mui/x-data-grid';
-import PriorityBoard from './PriorityBoard';
 import { todoContext } from '../page/HomePage';
 import axios from 'axios';
-import {useAuth} from "../AuthContext";
 
 export default function MainBoard({user}) {
   // const columns = [
@@ -29,7 +25,7 @@ export default function MainBoard({user}) {
   },[user])
 
   return (
-    <div className='border-2 border-indigo-500 h-2/3 w-full'>
+    <div className='h-2/3 w-full'>
       {/* <BoardBar todos={todos} setTodos={setTodos}/>
       {
         todos.map(todo => (
@@ -37,7 +33,11 @@ export default function MainBoard({user}) {
         )
       } */}
     {/* <DataGrid rows={todos} columns={columns}/> */}
-      {todos? <PriorityBoard todos={todos} /> : "" }
+      {/* {todos? <PriorityBoard todos={todos} /> : "" } */}
+
+      <ul className='divide-y divide-gray-300  divide-opacity-100'>
+              {todos!=null ? todos.map(todo=><li><Todo todo={todo} /></li>):""} 
+              </ul>
       
     </div>
   )

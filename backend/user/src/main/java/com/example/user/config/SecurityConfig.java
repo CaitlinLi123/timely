@@ -52,6 +52,9 @@ public class SecurityConfig {
                         .requestMatchers("/register", "/login", "/logout").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())
+                .httpBasic(basic -> basic.disable())
+                // .formLogin(form -> form.disable())
+                .logout(logout -> logout.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

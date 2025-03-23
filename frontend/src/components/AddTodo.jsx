@@ -40,6 +40,8 @@ export default function AddTodo({setShowAdd}) {
         })
         .then(res=>{
             if(res.status===200){
+                console.log(res.data);
+                newTodo["id"] = res.data["id"];
                 alert("success");
             }
         }).catch(e=>{

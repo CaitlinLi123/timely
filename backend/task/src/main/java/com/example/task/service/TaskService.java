@@ -40,9 +40,9 @@ public class TaskService {
     public ResponseEntity<Task> updateATodo(int id, Task task) {
         Task taskFound = dao.findById(id).get();
         if (taskFound != null) {
-            taskFound.setType(task.getType());
-            taskFound.setDescription(task.getDescription());
-            return new ResponseEntity<>(dao.save(taskFound), HttpStatus.OK);
+            // taskFound.setType(task.getType());
+            // taskFound.setDescription(task.getDescription());
+            return new ResponseEntity<>(dao.save(task), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }

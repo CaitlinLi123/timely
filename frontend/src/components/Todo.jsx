@@ -39,7 +39,7 @@ export default function Todo({todo}) {
 
   return (
     <div className='grid grid-cols-7 w-full h-[30px]'>
-      {edit? <EditTodo todo={todo} setTodos={setTodos}/> : <><div className='col-span-2'>{todo.description}</div>
+      {edit? <EditTodo todo={todo} setTodos={setTodos} todos={todos} setEdit={setEdit}/> : <><div className='col-span-2'>{todo.description}</div>
      <div className=''>{todo.priority}</div>
      <div className=''>{todo.type}</div>
      <div className=''>{new Date(todo.date).toISOString().split('T')[0]}</div>

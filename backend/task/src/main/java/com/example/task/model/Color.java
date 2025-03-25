@@ -1,29 +1,25 @@
 package com.example.task.model;
 
-import java.util.Date;
-
-import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class Task {
+@AllArgsConstructor
+@Table(name = "colors")
+public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String type;
-    private String description;
-    private String priority;
-    private String status;
-    private Date date;
-    private String username;
+    private Long id;
+
+    @Column(nullable = false)
+    private String rgbCode;
 }

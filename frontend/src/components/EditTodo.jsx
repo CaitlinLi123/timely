@@ -46,7 +46,7 @@ export default function EditTodo({todo,todos,setTodos,setEdit}) {
         })
     }
   return (
-    <>
+    <div>
         <input className='col-span-2' 
         type='text' id="edittodo_description" name='description' value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -84,6 +84,6 @@ export default function EditTodo({todo,todos,setTodos,setEdit}) {
             </button>
         </div>
         
-    </>
+    </div>
   )
 }

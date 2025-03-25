@@ -2,7 +2,7 @@ package com.example.task.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.task.model.Task;
+import com.example.task.model.Todo;
 import com.example.task.service.TaskService;
 
 import java.util.List;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,33 +34,38 @@ public class TaskController {
     }
 
     @PostMapping("/todo")
-    public ResponseEntity<Task> postToDos(@RequestBody Task task) {
+    public ResponseEntity<Todo> postToDos(@RequestBody Todo task) {
         return taskService.createToDos(task);
     }
 
     @GetMapping("/todos/all")
-    public ResponseEntity<List<Task>> getAllToDos() {
+    public ResponseEntity<List<Todo>> getAllToDos() {
         return taskService.getAllToDos();
     }
 
     @GetMapping("/todo/{id}")
-    public ResponseEntity<Task> getATodoById(@PathVariable int id) {
+    public ResponseEntity<Todo> getATodoById(@PathVariable int id) {
         return taskService.getAToDoById(id);
     }
 
     @GetMapping("/todos/all/{username}")
-    public ResponseEntity<List<Task>> getTodosByUserName(@PathVariable String username) {
+    public ResponseEntity<List<Todo>> getTodosByUserName(@PathVariable String username) {
         return taskService.getToDoByUsername(username);
     }
 
     @GetMapping("/todos")
-    public ResponseEntity<List<Task>> getTodos(@RequestParam int page, @RequestParam int limit) {
+    public ResponseEntity<List<Todo>> getTodos(@RequestParam int page, @RequestParam int limit) {
         return taskService.getTodos(page, limit);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateATodo(@PathVariable int id, @RequestBody Task task) {
+    public ResponseEntity<Todo> updateATodo(@PathVariable int id, @RequestBody Todo task) {
         return taskService.updateATodo(id, task);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Todo> updateDescription(@PathVariable int id, @RequestParam String description) {
+        return taskService.updateTodoDesc(id, description);
     }
 
     @DeleteMapping("/{id}")

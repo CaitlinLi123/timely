@@ -3,6 +3,7 @@ package com.example.task.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.task.model.Todo;
+import com.example.task.model.TodoRequestDTO;
 import com.example.task.service.TaskService;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:5173")
 public class TaskController {
     private TaskService taskService;
@@ -33,8 +34,8 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @PostMapping("/todo")
-    public ResponseEntity<Todo> postToDos(@RequestBody Todo task) {
+    @PostMapping("/todos")
+    public ResponseEntity<Todo> postToDos(@RequestBody TodoRequestDTO task) {
         return taskService.createToDos(task);
     }
 
@@ -58,17 +59,17 @@ public class TaskController {
         return taskService.getTodos(page, limit);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/todo/{id}")
     public ResponseEntity<Todo> updateATodo(@PathVariable int id, @RequestBody Todo task) {
         return taskService.updateATodo(id, task);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/todo/{id}")
     public ResponseEntity<Todo> updateDescription(@PathVariable int id, @RequestParam String description) {
         return taskService.updateTodoDesc(id, description);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/todo/{id}")
     public ResponseEntity<String> deleteATodo(@PathVariable int id) {
         return taskService.deleteATodo(id);
     }

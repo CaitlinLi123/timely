@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MainBoard from "../components/MainBoard";
 import AppNav from "../components/AppNav";
 import BoardBar from '../components/BoardBar';
@@ -13,57 +13,11 @@ export default function HomePage() {
   const {loading,user} = useAuth();
    const [todos,setTodos] = useState(
     [
-      // {
-      //   "description": "Implement authentication system",
-      //   "Progress": "To-Do",
-      //   "type": "Backend",
-      //   "priority": "High",
-      //   "date": "Mar 30"
-      // },
-      // {
-      //   "description": "Design homepage layout",
-      //   "status": "To-Do",
-      //   "type": "",
-      //   "priority": "Medium",
-      //   "date": ""
-      // },
-      // {
-      //   "description": "Set up CI/CD pipeline",
-      //   "status": "Doing",
-      //   "type": "DevOps",
-      //   "priority": "High",
-      //   "date": "Apr 5"
-      // },
-      // {
-      //   "description": "Write unit tests",
-      //   "status": "Doing",
-      //   "type": "",
-      //   "priority": "Medium",
-      //   "date": ""
-      // },
-      // {
-      //   "description": "Fix login page bug",
-      //   "status": "To-Do",
-      //   "type": "Bug",
-      //   "priority": "High",
-      //   "date": "Mar 28"
-      // },
-      // {
-      //   "description": "Update API documentation",
-      //   "status": "Done",
-      //   "type": "",
-      //   "priority": "Low",
-      //   "date": ""
-      // },
-      // {
-      //   "description": "Deploy application to production",
-      //   "Progress": "Done",
-      //   "type": "Release",
-      //   "priority": "High",
-      //   "date": "Mar 22"
-      // }
     ]
    );
+
+   useEffect(()=>{
+   },[todos])
 
   const [showAdd, setShowAdd] = useState(false);
   const [colors,setColors] = useState([

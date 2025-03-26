@@ -4,7 +4,11 @@ import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
 import { todoContext } from '../page/HomePage';
 
-export default function SelectLabels({labels,setSelect,setEditLabels,type,setType}) {
+export default function SelectLabels(
+  {labels,setSelect,setEditLabels,
+    setLables,
+    setUsedLabels,usedLabels
+  }) {
   const {colors} = useContext(todoContext);
   return (
     <>
@@ -28,29 +32,36 @@ export default function SelectLabels({labels,setSelect,setEditLabels,type,setTyp
                 id="labels"
                 labels
                 onChange={(event,value)=>{
-                  setType(value)
+                  setUsedLabels(value)
                 }}
-                defaultValue={type}
-                options={labels.map((label) => label.name)}
-                renderInput={(params) => <TextField {...params} label="labels"/>}
+                value={usedLabels.map(usedLabel=>usedLabel.name)}
+                options={labels != null ? labels.map((label) => label.name) : ""}
+                renderInput={(params) => <TextField {...params} label="labels"
+                />}
               /> 
-
               {/* checkboxes */}
                 
                 <div className='flex flex-col'>
                   {
                     labels.map(
                       (label)=>
-                        <div><input type="checkbox" id={label.name} name={label.name} value={label.name} />
-                  <label for={label.name} style={{backgroundColor:colors[label.color]}}> {label.name}</label>
+                        <div><input type="checkbox" id={label.name} name={label.name} value={label.name} 
+                        checked={usedLabels.some((usedLabel)=>usedLabel.id === label.id)}
+                        onChange={(e)=>{
+                          if(e.target.checked){
+                            setUsedLabels([...usedLabels,label]);
+                          }else{
+                            setUsedLabels(usedLabels.filter((l)=>l.id!=label.id));
+                          }
+                        }}  
+                        />
+                  <label for={label.name} style={{backgroundColor:label.color}}> {label.name}</label>
                         </div>
                     )
                   }
                   
                 </div>
-              
-
-                
+            
                 
             {/* create new labels */}
             <button className=' rounded-lg

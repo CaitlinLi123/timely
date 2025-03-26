@@ -2,7 +2,12 @@ import React, { useState } from 'react'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { todoContext } from '../page/HomePage';
 import { useContext } from 'react';
-export default function CreateLabels({setSelect}) {
+export default function CreateLabels(
+    {
+        setSelect,
+        setUsedLabels,usedLabels,
+        labels,setLables
+    }) {
     const {colors} = useContext(todoContext);
     const [chosenColor, setChosenColor] = useState("#FCA5A5");
     const [newLabel,setNewLabel] = useState("your new label");
@@ -47,7 +52,6 @@ export default function CreateLabels({setSelect}) {
                     <div className="h-15 w-15"
                     style={{backgroundColor: color}}
                     onClick={
-                        
                             ()=>{setChosenColor(color)}
                         
                     }

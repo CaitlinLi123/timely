@@ -1,7 +1,7 @@
 import React, { useContext, useEffect} from 'react'
 import Todo from './Todo'
 import { todoContext } from '../page/HomePage';
-import axios from 'axios';
+import { todoApi } from '../axios';
 
 export default function MainBoard({user}) {
   // const columns = [
@@ -13,7 +13,7 @@ export default function MainBoard({user}) {
 
   useEffect(()=>{
     if (!user) return;
-    axios.get(`http://localhost:8000/task/todos/all/${user}`)
+    todoApi.get(`/todos/all/${user}`)
     .then(res=>{
       if(res.data){
         setTodos(res.data);

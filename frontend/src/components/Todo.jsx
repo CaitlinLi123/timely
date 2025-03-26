@@ -8,7 +8,7 @@ import { todoContext } from '../page/HomePage';
 export default function Todo({todo}) {
    const [description, setDescription] = useState(todo.description);
     const [priority, setPriority] = useState(todo.priority);
-    const [type, setType] = useState([]);
+    const [usedLabels, setUsedLabels] = useState(todo.labels);
     const [date, setDate] = useState(todo.date); // Format for date input
     const [status, setStatus] = useState(todo.status);
 
@@ -50,17 +50,11 @@ export default function Todo({todo}) {
   const handleClickLabels = ()=>{
     setEditLabels(true);
   }
-
-  useEffect(()=>{
-    setType([
-      {"name":"backend","color":5},
-          {"name":"leetcode","color":0}])
-  },[])
   
 
   return (
     <div className='grid grid-cols-7 w-full h-[30px] 
-    my-[0.5%] px-[3%]' key={todo.id}>
+    my-[0.5%] px-[3%]' key={`todo_${todo.id}`}>
 
       {/* edit? <EditTodo todo={todo} setTodos={setTodos} todos={todos} setEdit={setEdit}/> :  */}
        <div className='col-span-2 hover:bg-gray-200' 
@@ -75,10 +69,10 @@ export default function Todo({todo}) {
         onClick={handleDescriptionChange}/> : ""}
         </div>
          
-        {editDes?<EditDes description={description} setEditDes={setEditDes} id={todo.id}/>:""}
+        {editDes?<EditDes description={description} setEditDes={setEditDes} key={`editDesc_${todo.id}`}/>:""}
         </div>
         <div>
-            <select name="priority" id="edittodo_priority" value={priority}
+            <select name="priority" id="edittodo_priority" value={priority.toLowerCase()}
             onChange={(e) => setPriority(e.target.value)}
             >
                 <option value="high">High</option>
@@ -88,7 +82,7 @@ export default function Todo({todo}) {
         </div>
 
    
-        <select name="status" id="edittodo_status" value={status} 
+        <select name="status" id="edittodo_status" value={status.toLowerCase()} 
         onChange={(e) => setStatus(e.target.value)}
         >
             <option value="pending">Pending</option>
@@ -97,11 +91,11 @@ export default function Todo({todo}) {
         </select> 
 
         <div id="edittodo_type" className='cursor-pointer flex gap-2' onClick={handleClickLabels}>
-          {type.map(t=><div 
-          className='rounded-md px-2 text-sm'
-          style={{backgroundColor:colors[t.color]}}>{t.name}</div>)}
+          {usedLabels.map(usedLabel=><div 
+          className='rounded-md px-2 text-sm place-content-center'
+          style={{backgroundColor:usedLabel.color}}>{usedLabel.name}</div>)}
           </div>
-        {editLabels && <EditLabels key={new Date(Date.now)} setEditLabels={setEditLabels} type={type} setType={setType} />}
+        {editLabels && <EditLabels key={new Date(Date.now)} setEditLabels={setEditLabels} usedLabels={usedLabels} setUsedLabels={setUsedLabels} />}
         <input type="date" id="edittodo_date" name='date' 
         // value={date} 
         onChange={(e) => setDate(e.target.value)}

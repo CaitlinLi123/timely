@@ -1,9 +1,9 @@
 package com.example.task.model;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
+import org.hibernate.annotations.ManyToAny;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -12,19 +12,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-enum Priority {
-    LOW, MEDIUM, HIGH
-}
-
-enum Status {
-    PENDING, IN_PROGRESS, COMPLETED
-}
 
 @Data
 @Entity
@@ -34,7 +29,7 @@ enum Status {
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String description;
     @Enumerated(EnumType.STRING)
     private Priority priority;
@@ -43,6 +38,7 @@ public class Todo {
     private Date date;
     private String username;
 
-    @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TodoLabel> labels;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "todo_labels", joinColumns = @JoinColumn(name = "todo_id"), inverseJoinColumns = @JoinColumn(name = "label_id"))
+    private List<Label> labels;
 }

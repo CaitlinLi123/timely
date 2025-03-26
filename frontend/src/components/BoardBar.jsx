@@ -16,7 +16,7 @@ export default function BoardBar({setShowAdd}) {
       <div>Priority</div>
       <div>Status</div>
       
-      <div>Labels</div>
+      <div className='col-span-2'>Labels</div>
       <div>Due Date</div>
       <div >
       {/* <Button variant="contained" onClick={handleClick}>

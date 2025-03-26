@@ -53,7 +53,7 @@ export default function Todo({todo}) {
   
 
   return (
-    <div className='grid grid-cols-7 w-full h-[30px] 
+    <div className='relative grid grid-cols-7 w-full place-items-center text-left 
     my-[0.5%] px-[3%]' key={`todo_${todo.id}`}>
 
       {/* edit? <EditTodo todo={todo} setTodos={setTodos} todos={todos} setEdit={setEdit}/> :  */}
@@ -62,14 +62,19 @@ export default function Todo({todo}) {
         onChange={(e) => setDescription(e.target.value)}
         onMouseOver={()=>{setHover(true)}}
         onMouseOut={()=>{setHover(false)}}
-        ><div>
-           {description}
-        {hover ? <EditIcon 
-        className='cursor-pointer'
-        onClick={handleDescriptionChange}/> : ""}
-        </div>
-         
-        {editDes?<EditDes description={description} setEditDes={setEditDes} key={`editDesc_${todo.id}`}/>:""}
+          >
+          <div className='flex items-center'>
+            {description}
+          {hover ? <EditIcon 
+          className='cursor-pointer'
+          onClick={handleDescriptionChange}/> : ""}
+          </div>
+        
+          <div className="absolute top-full left-0 w-full z-50">
+          {editDes?
+            <EditDes description={description} setEditDes={setEditDes} key={`editDesc_${todo.id}`} />    
+            :""}
+          </div>
         </div>
         <div>
             <select name="priority" id="edittodo_priority" value={priority.toLowerCase()}
@@ -90,12 +95,22 @@ export default function Todo({todo}) {
             <option value="complete">Complete</option>
         </select> 
 
-        <div id="edittodo_type" className='cursor-pointer flex gap-2' onClick={handleClickLabels}>
+          <div className='col-span-2 relative'>
+            <div id="edittodo_labels" className='
+              cursor-pointer flex gap-2 flex-wrap justify-start' onClick={handleClickLabels}>
           {usedLabels.map(usedLabel=><div 
           className='rounded-md px-2 text-sm place-content-center'
           style={{backgroundColor:usedLabel.color}}>{usedLabel.name}</div>)}
+          
           </div>
-        {editLabels && <EditLabels key={new Date(Date.now)} setEditLabels={setEditLabels} usedLabels={usedLabels} setUsedLabels={setUsedLabels} />}
+          {/* <div className="absolute top-full left-0 z-50">
+
+          </div> */}
+            {editLabels && 
+            <EditLabels key={`editlabels_${todo.id}`} setEditLabels={setEditLabels} usedLabels={usedLabels} setUsedLabels={setUsedLabels} />}        
+          </div>
+        
+        
         <input type="date" id="edittodo_date" name='date' 
         // value={date} 
         onChange={(e) => setDate(e.target.value)}

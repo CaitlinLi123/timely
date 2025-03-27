@@ -105,4 +105,14 @@ public class TaskService {
         }
     }
 
+    public ResponseEntity<Todo> updateLabels(int id, List<Label> labels) {
+        Todo taskFound = taskDao.findById(id).get();
+        if (taskFound != null) {
+            taskFound.setLabels(labels);
+            return new ResponseEntity<>(taskDao.save(taskFound), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

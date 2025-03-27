@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.task.dao.LabelDao;
 import com.example.task.model.Label;
+import com.example.task.model.Todo;
 
 @Service
 public class LabelService {
@@ -33,6 +34,16 @@ public class LabelService {
             return new ResponseEntity<>(labels, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity<String> deleteLabelById(int id) {
+        Label label = labelDao.findById(id).get();
+        if (label != null) {
+            labelDao.delete(label);
+            return new ResponseEntity<>("success", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("not found in db", HttpStatus.BAD_REQUEST);
         }
     }
 

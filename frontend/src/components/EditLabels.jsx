@@ -6,13 +6,11 @@ import { todoContext } from '../page/HomePage';
 import { LabelApi } from '../axios';
 import { useAuth } from '../AuthContext';
 
-export default function EditLabels({setEditLabels,usedLabels,setUsedLabels}) {
+export default function EditLabels({setEditLabels,usedLabels,setUsedLabels,todoid}) {
     const [select,setSelect] = useState(true);
     const {colors} = useContext(todoContext);
     const {user} = useAuth();
-    const [labels,setLables] = useState(
-      []
-          );
+    const [labels,setLables] = useState([]);
       
     useEffect(()=>{
       LabelApi.get(`/all/${user}`).then((res)=>{
@@ -20,17 +18,19 @@ export default function EditLabels({setEditLabels,usedLabels,setUsedLabels}) {
       }).catch((e)=>{
         console.log(e);
       })
+      console.log(todoid);
 
     },[])
   return (
-    <EditPartBoard>
-        {select === true ? <SelectLabels 
+    <EditPartBoard key={`editlabels_${todoid}`}>
+        {select === true ? <SelectLabels key={`selectlabels_${todoid}`}
         labels={labels} setLables = {setLables}
         setSelect={setSelect} 
         setUsedLabels={setUsedLabels} usedLabels={usedLabels}
         setEditLabels={setEditLabels}
+        todoid={todoid}
         />:
-        <CreateLabels 
+        <CreateLabels key={`createlabels_${todoid}`}
         setSelect={setSelect} 
         setUsedLabels={setUsedLabels} usedLabels={usedLabels}
         labels={labels} setLables = {setLables}

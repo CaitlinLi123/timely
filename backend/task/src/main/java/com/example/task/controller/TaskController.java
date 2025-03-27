@@ -2,6 +2,7 @@ package com.example.task.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.task.model.Label;
 import com.example.task.model.Todo;
 import com.example.task.model.TodoRequestDTO;
 import com.example.task.service.TaskService;
@@ -64,9 +65,14 @@ public class TaskController {
         return taskService.updateATodo(id, task);
     }
 
-    @PatchMapping("/todo/{id}")
+    @PatchMapping("/todo/{id}/description")
     public ResponseEntity<Todo> updateDescription(@PathVariable int id, @RequestParam String description) {
         return taskService.updateTodoDesc(id, description);
+    }
+
+    @PatchMapping("/todo/{id}/label")
+    public ResponseEntity<Todo> updateLabels(@PathVariable int id, @RequestBody List<Label> labels) {
+        return taskService.updateLabels(id, labels);
     }
 
     @DeleteMapping("/todo/{id}")

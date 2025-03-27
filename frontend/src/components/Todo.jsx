@@ -1,9 +1,11 @@
-import React, { useState,useContext, useEffect } from 'react'
+import React, { useState,useContext, useEffect,createContext } from 'react'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditDes from './EditDes';
 import EditLabels from './EditLabels';
 import { todoContext } from '../page/HomePage';
+
+export const labelContext = createContext();
 
 export default function Todo({todo}) {
    const [description, setDescription] = useState(todo.description);
@@ -14,7 +16,7 @@ export default function Todo({todo}) {
 
     const [hover,setHover] = useState(false);
     const [editDes, setEditDes] = useState(false);
-    const [editLabels, setEditLabels] = useState(true);
+    const [editLabels, setEditLabels] = useState(false);
   
     const {colors} = useContext(todoContext);
   // const [confirmDelete, setConfirmDelete] = useState(false);
@@ -50,14 +52,19 @@ export default function Todo({todo}) {
   const handleClickLabels = ()=>{
     setEditLabels(true);
   }
+
+  useEffect(()=>{
+    console.log(editLabels);
+  },[editLabels])
   
 
   return (
-    <div className='relative grid grid-cols-7 w-full place-items-center text-left 
-    my-[0.5%] px-[3%]' key={`todo_${todo.id}`}>
+    <labelContext.Provider value={{editLabels,setEditLabels}}>
+      <div className='relative grid grid-cols-7 w-full justify-items-start text-left 
+    my-[0.5%] px-[3%]'  key={`todo_${todo.id}`}>
 
       {/* edit? <EditTodo todo={todo} setTodos={setTodos} todos={todos} setEdit={setEdit}/> :  */}
-       <div className='col-span-2 hover:bg-gray-200' 
+       <div className='flex col-span-2 hover:bg-gray-200 justify-items-start text-left' 
         type='text' id="edittodo_description" name='description' 
         onChange={(e) => setDescription(e.target.value)}
         onMouseOver={()=>{setHover(true)}}
@@ -72,7 +79,7 @@ export default function Todo({todo}) {
         
           <div className="absolute top-full left-0 w-full z-50">
           {editDes?
-            <EditDes description={description} setEditDes={setEditDes} key={`editDesc_${todo.id}`} />    
+            <EditDes description={description} setEditDes={setEditDes} key={`editDesc_${todo.id}`} todoid={todo.id}/>    
             :""}
           </div>
         </div>
@@ -97,17 +104,17 @@ export default function Todo({todo}) {
 
           <div className='col-span-2 relative'>
             <div id="edittodo_labels" className='
-              cursor-pointer flex gap-2 flex-wrap justify-start' onClick={handleClickLabels}>
-          {usedLabels.map(usedLabel=><div 
-          className='rounded-md px-2 text-sm place-content-center'
-          style={{backgroundColor:usedLabel.color}}>{usedLabel.name}</div>)}
-          
-          </div>
-          {/* <div className="absolute top-full left-0 z-50">
-
-          </div> */}
-            {editLabels && 
-            <EditLabels key={`editlabels_${todo.id}`} setEditLabels={setEditLabels} usedLabels={usedLabels} setUsedLabels={setUsedLabels} />}        
+              cursor-pointer flex gap-2 flex-wrap'  onClick={handleClickLabels}>
+                <div className='rounded-full bg-gray-100 h-5 w-5 cursor-pointer hover:bg-gray-200
+                flex justify-center items-center'  onClick={handleClickLabels}>+</div>
+              {usedLabels.map(usedLabel=><div 
+              className='rounded-md px-2 text-sm place-content-center' key={`usedlabels_${usedLabel.id}`}
+              style={{backgroundColor:usedLabel.color}}>{usedLabel.name}</div>)}
+            </div>
+            {editLabels === true? <EditLabels key={`editlabels_${todo.id}`} 
+            setEditLabels={setEditLabels} usedLabels={usedLabels} 
+            setUsedLabels={setUsedLabels}
+            todoid={todo.id} /> : null}        
           </div>
         
         
@@ -124,5 +131,7 @@ export default function Todo({todo}) {
       
      
     </div>
+    </labelContext.Provider>
+    
   )
 }

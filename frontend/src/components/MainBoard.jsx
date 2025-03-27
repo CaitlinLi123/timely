@@ -25,7 +25,7 @@ export default function MainBoard({user}) {
   },[user])
 
   return (
-    <div className='h-2/3 w-full'>
+    <div className='h-2/3 w-full' key={"mainboard"}>
       {/* <BoardBar todos={todos} setTodos={setTodos}/>
       {
         todos.map(todo => (
@@ -36,8 +36,8 @@ export default function MainBoard({user}) {
       {/* {todos? <PriorityBoard todos={todos} /> : "" } */}
 
       <ul className='divide-y divide-gray-300  divide-opacity-100'>
-              {todos!=null ? todos.map(todo=><li><Todo todo={todo} /></li>):""} 
-              </ul>
+          {todos!=null ? todos.map(todo=><li  key={todo.id}><Todo todo={todo}  key={todo.id}/></li>):""} 
+      </ul>
       
     </div>
   )

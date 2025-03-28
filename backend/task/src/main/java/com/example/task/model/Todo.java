@@ -38,7 +38,7 @@ public class Todo {
     private Date date;
     private String username;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "todo_labels", joinColumns = @JoinColumn(name = "todo_id"), inverseJoinColumns = @JoinColumn(name = "label_id"))
     private List<Label> labels;
 }

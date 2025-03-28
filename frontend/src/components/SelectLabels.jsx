@@ -2,15 +2,17 @@ import React, { useContext, useEffect } from 'react'
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
 import { todoContext } from '../page/HomePage';
 import { labelContext } from './Todo';
 import { todoApi } from '../axios';
 import { useAuth } from '../AuthContext';
 
+
 export default function SelectLabels(
   {labels,setSelect,
     setLables,
-    setUsedLabels,usedLabels,todoid
+    setUsedLabels,usedLabels,todoid,setEditALabel,setLabelTobeEdit
   }) {
   const {colors} = useContext(todoContext);
   const {setEditLabels} = useContext(labelContext);
@@ -83,12 +85,13 @@ export default function SelectLabels(
                   <label htmlFor={label.name} style={{backgroundColor:label.color}} 
                   className='px-2 rounded-lg'> {label.name}</label>
                   <button 
-                    className='rounded-full h-5 w-5 bg-gray-100 cursor-pointer hover:bg-gray-300
+                    className='rounded-sm h-5 w-5 bg-gray-100 cursor-pointer hover:bg-gray-300
                     flex align-items-center'
                     onClick={()=>{
-                            console.log("Closing EditLabels...");
-                            setEditLabels(false)}}>
-                        <CloseIcon fontSize='small'/>
+                      setLabelTobeEdit(label);
+                      setSelect(false);
+                            setEditALabel(true)}}>
+                        <EditIcon fontSize='small'/>
                     </button>
                         </div>
                     ) : null
@@ -98,7 +101,7 @@ export default function SelectLabels(
             
                 
             {/* create new labels */}
-            <div className='w-full border-t pt-2 flex justify-center'>
+            <div className='w-full border-t border-gray-300 pt-2 flex justify-center'>
               <button className=' rounded-lg
               bg-gray-200 px-2 py-1 mb-1 
               hover:outline-none hover:ring-2 hover:ring-gray-300 hover:border-transparent
@@ -110,7 +113,9 @@ export default function SelectLabels(
             </div>
             
             
-            <div className='flex justify-between w-full text-md border-t pt-2'>
+            <div className='flex justify-between w-full text-md border-t 
+            border-gray-300
+            pt-2'>
               {/* save button */}
                 <button className=' rounded-lg
               bg-red-200 px-2 py-1 mb-1

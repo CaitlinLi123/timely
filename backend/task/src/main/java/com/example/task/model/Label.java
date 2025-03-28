@@ -23,7 +23,14 @@ public class Label {
 
     private String username; // created by which user
 
-    @ManyToMany(mappedBy = "labels")
+    @ManyToMany(mappedBy = "labels", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JsonIgnore
     private List<Todo> todos;
+
+    @PreRemove
+    private void removeLabelsFromTodos() {
+        for (Todo todo : todos) {
+            todo.getLabels().remove(this);
+        }
+    }
 }

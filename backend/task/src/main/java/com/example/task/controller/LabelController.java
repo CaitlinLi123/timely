@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/label")
@@ -36,6 +37,11 @@ public class LabelController {
     @PostMapping("/create")
     public ResponseEntity<Label> createALabel(@RequestBody Label label) {
         return labelService.createALabel(label);
+    }
+
+    @PutMapping("/{id}/update")
+    public ResponseEntity<Label> updateALabel(@PathVariable int id, @RequestBody Label label) {
+        return labelService.updateALabel(id, label);
     }
 
     @DeleteMapping("/{id}")

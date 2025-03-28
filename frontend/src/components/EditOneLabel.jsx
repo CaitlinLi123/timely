@@ -1,32 +1,59 @@
 import React, { useState } from 'react'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { todoContext } from '../page/HomePage';
-import { useAuth } from '../AuthContext';
 import { useContext } from 'react';
 import axios, {LabelApi} from '../axios';
-export default function CreateLabels(
+
+export default function EditOneLabel(
     {
-        setSelect,
-        setUsedLabels,usedLabels,
-        labels,setLables
+        labelTobeEdit,setLabelTobeEdit,
+        setSelect, setUsedLabels,usedLabels,
+        labels,setLables,
+        user,todoid
     }) {
     const {colors} = useContext(todoContext);
-    const [chosenColor, setChosenColor] = useState("#FCA5A5");
-    const [newLabel,setNewLabel] = useState("your new label");
-    const {user} = useAuth();
+    const [chosenColor, setChosenColor] = useState(labelTobeEdit.color);
+    const [newLabel,setNewLabel] = useState(labelTobeEdit.name);
 
     const handleClick = ()=>{
-        LabelApi.post('/create',{
+        LabelApi.put(`/${todoid}/update`,{
             "color":chosenColor,
             "name":newLabel,
             "username":user
         }).then(
             (res)=>{
-                if(res.status==201){
+                if(res.status==200){
                     const l = res.data;
-                    setLables([...labels,l]);
+                    setUsedLabels(prev=>{
+                        prev.map(label=>label.id === l.id? l : label)
+                    });
+                    setLables(prev=>{
+                        prev.map(label=>label.id === l.id? l : label)
+                    });
                 }else{
-                    alert("fail to create a new label");
+                    alert("fail to update");
+                    console.log(res);
+                }
+            }
+        ).catch(e=>{
+            console.log(e);
+        }).finally(setSelect(true));
+    }
+
+    const handleDelete = ()=>{
+        LabelApi.delete(`/${labelTobeEdit.id}`,labelTobeEdit).then(
+            (res)=>{
+                if(res.status==200){
+                    console.log(res);
+                    setUsedLabels(prev=>
+                        prev.filter(label=>label.id !== labelTobeEdit.id)
+                    );
+                    setLables(prev=>
+                        prev.filter(label=>label.id !== labelTobeEdit.id)
+                    );
+                }else{
+                    alert("fail to delete");
+                    console.log(res);
                 }
             }
         ).catch(e=>{
@@ -92,8 +119,8 @@ export default function CreateLabels(
               <button className=' rounded-lg
               bg-red-200 px-2 py-1 mb-1 
               hover:outline-none hover:ring-2 hover:ring-red-300 hover:border-transparent
-              hover:bg-red-300 hover:text-white cursor-pointer'
-              >Clear</button>
+              hover:bg-red-300 hover:text-white cursor-pointer' onClick={handleDelete}
+              >Delete</button>
             </div>
     </>
   )

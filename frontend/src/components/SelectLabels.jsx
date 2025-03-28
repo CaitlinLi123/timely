@@ -33,11 +33,14 @@ export default function SelectLabels(
   return (
     <>
         {/* title */}
-                <div className='flex mt-[2%] justify-between'>
+                <div className='flex mt-[2%]'>
                    <div>Labels</div>
-                   <div className=''>
+                   <div>
                     <button 
-                    className='rounded-full bg-red-200 cursor-pointer hover:bg-red-300'
+                    className='
+                    absolute
+                    right-[5%] 
+                    rounded-full bg-red-200 cursor-pointer hover:bg-red-300'
                     onClick={()=>{
                             console.log("Closing EditLabels...");
                             setEditLabels(false)}}>
@@ -63,7 +66,7 @@ export default function SelectLabels(
               /> 
               {/* checkboxes */}
                 
-                <div className='flex flex-col'>
+                <div className='flex flex-col gap-2 align-items-center justify-items-center'>
                   {
                     labels? labels.map(
                       (label)=>
@@ -79,6 +82,14 @@ export default function SelectLabels(
                         />
                   <label htmlFor={label.name} style={{backgroundColor:label.color}} 
                   className='px-2 rounded-lg'> {label.name}</label>
+                  <button 
+                    className='rounded-full h-5 w-5 bg-gray-100 cursor-pointer hover:bg-gray-300
+                    flex align-items-center'
+                    onClick={()=>{
+                            console.log("Closing EditLabels...");
+                            setEditLabels(false)}}>
+                        <CloseIcon fontSize='small'/>
+                    </button>
                         </div>
                     ) : null
                   }
@@ -87,7 +98,8 @@ export default function SelectLabels(
             
                 
             {/* create new labels */}
-            <button className=' rounded-lg
+            <div className='w-full border-t pt-2 flex justify-center'>
+              <button className=' rounded-lg
               bg-gray-200 px-2 py-1 mb-1 
               hover:outline-none hover:ring-2 hover:ring-gray-300 hover:border-transparent
               hover:bg-gray-300 cursor-pointer'
@@ -95,14 +107,26 @@ export default function SelectLabels(
                 setSelect(false);
               }}
               >Create new labels</button>
+            </div>
             
-            {/* save button */}
+            
+            <div className='flex justify-between w-full text-md border-t pt-2'>
+              {/* save button */}
                 <button className=' rounded-lg
-              bg-red-200 px-2 py-1 mb-1 
+              bg-red-200 px-2 py-1 mb-1
               hover:outline-none hover:ring-2 hover:ring-red-300 hover:border-transparent
               hover:bg-red-300 hover:text-white cursor-pointer'
               onClick={handleClick}
               >Save</button>
+
+              {/* save button */}
+              <button className=' rounded-lg
+              bg-red-200 px-2 py-1 mb-1 
+              hover:outline-none hover:ring-2 hover:ring-red-300 hover:border-transparent
+              hover:bg-red-300 hover:text-white cursor-pointer'
+              >Clear</button>
+            </div>
+            
     </>
   )
 }

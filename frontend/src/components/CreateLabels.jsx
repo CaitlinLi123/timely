@@ -35,7 +35,7 @@ export default function CreateLabels(
     }
   return (
     <>
-        <div className='flex mt-[2%] justify-between'>
+        <div className='flex mt-[2%]'>
             <div>Labels</div>
                 <div className=''>
                 <button 

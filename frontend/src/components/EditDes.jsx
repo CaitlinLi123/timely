@@ -1,13 +1,16 @@
 import React from 'react'
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import axios from 'axios';
+import { todoApi } from '../axios';
 import EditPartBoard from './EditPartBoard';
 
-export default function EditDes({description,setEditDes,id}) {
+export default function EditDes({description,setEditDes,todoid}) {
 
 const editDesc = ()=>{
-    axios.patch(`http://localhost:8000/task/${id}/description?description=${description}`, {
+    todoApi.patch(`/todo/${todoid}/description`, 
+        // {"description":description},
+        JSON.stringify(description),
+        {
         headers: {
             "Content-Type": "application/json"
         }

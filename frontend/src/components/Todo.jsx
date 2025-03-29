@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditDes from './EditDes';
 import EditLabels from './EditLabels';
 import { todoContext } from '../page/HomePage';
+import { todoApi } from '../axios';
 
 // export const labelContext = createContext();
 export const editContext = createContext();
@@ -51,7 +52,61 @@ export default function Todo({todo}) {
   const handleClickLabels = ()=>{
     setEditLabels(true);
   }
+
+  const handleDateChange = (newDate)=>{
+    todoApi.patch(`/todo/${todo.id}/date`,
+      JSON.stringify(new Date(newDate).toISOString()),
+      {headers: {
+        "Content-Type": "application/json",
+      }},
+    ).then((res)=>{
+      if(res.status===200){
+        setDate(res.data.date);
+        // alert("succeed to update date");
+      }else{
+        alert("fail to update date");
+      }
+    }).catch(e=>{
+      console.log(e);
+    }
+    )
+  }
+
+  const handlePriorityChange = (newPriority)=>{
+    todoApi.patch(`/todo/${todo.id}/priority`,JSON.stringify(newPriority),{headers: {
+      "Content-Type": "application/json",
+    }}).then((res)=>{
+      if(res.status===200){
+        setPriority(res.data.priority);
+        // alert("succeed to update priority");
+      }else{
+        alert("fail to update date");
+      }
+    }).catch(e=>{
+      console.log(e);
+    }
+    )
+  }
+
+  const handleStatusChange = (newStatus)=>{
+    todoApi.patch(`/todo/${todo.id}/status`,JSON.stringify(newStatus),{headers: {
+      "Content-Type": "application/json",
+    }}).then((res)=>{
+      if(res.status===200){
+        setStatus(res.data.status);
+        // alert("succeed to update date");
+      }else{
+        alert("fail to update status");
+      }
+    }).catch(e=>{
+      console.log(e);
+    }
+    )
+  }
   
+  useEffect(()=>{
+    console.log(date);
+  },[date])
 
   return (
     <editContext.Provider value={{
@@ -85,7 +140,7 @@ export default function Todo({todo}) {
         </div>
         <div className='flex align-center justify-center'>
             <select name="priority" id="edittodo_priority" value={priority.toLowerCase()}
-            onChange={(e) => setPriority(e.target.value)}
+            onChange={(e) => {handlePriorityChange(e.target.value.toUpperCase())}}
             >
                 <option value="high">High</option>
                 <option value="medium">Medium</option>
@@ -95,11 +150,13 @@ export default function Todo({todo}) {
 
    
         <select name="status" id="edittodo_status" value={status.toLowerCase()} 
-        onChange={(e) => setStatus(e.target.value)}
+        onChange={(e) => {
+          console.log(e.target.value.toUpperCase());
+          handleStatusChange(e.target.value.toUpperCase())}}
         >
             <option value="pending">Pending</option>
             <option value="in_progress">In Progress</option>
-            <option value="complete">Complete</option>
+            <option value="completed">Complete</option>
         </select> 
 
           <div className='col-span-2 relative'>
@@ -122,7 +179,11 @@ export default function Todo({todo}) {
         
         <input type="date" id="edittodo_date" name='date' 
         // value={date} 
-        onChange={(e) => setDate(e.target.value)}
+        onChange={(e) => {
+          // console.log(e.target.value);
+          // setDate(e.target.value)
+          handleDateChange(e.target.value);
+        }}
         value={date ? date.split("T")[0] : "" }
         />
      

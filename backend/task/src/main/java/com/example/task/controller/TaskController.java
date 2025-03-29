@@ -3,10 +3,13 @@ package com.example.task.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.task.model.Label;
+import com.example.task.model.Priority;
+import com.example.task.model.Status;
 import com.example.task.model.Todo;
 import com.example.task.model.TodoRequestDTO;
 import com.example.task.service.TaskService;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,13 +69,28 @@ public class TaskController {
     }
 
     @PatchMapping("/todo/{id}/description")
-    public ResponseEntity<Todo> updateDescription(@PathVariable int id, @RequestParam String description) {
+    public ResponseEntity<Todo> updateDescription(@PathVariable int id, @RequestBody String description) {
         return taskService.updateTodoDesc(id, description);
     }
 
     @PatchMapping("/todo/{id}/label")
     public ResponseEntity<Todo> updateLabels(@PathVariable int id, @RequestBody List<Label> labels) {
         return taskService.updateLabels(id, labels);
+    }
+
+    @PatchMapping("/todo/{id}/date")
+    public ResponseEntity<Todo> updateDate(@PathVariable int id, @RequestBody Date date) {
+        return taskService.updateDate(id, date);
+    }
+
+    @PatchMapping("/todo/{id}/priority")
+    public ResponseEntity<Todo> updatePriority(@PathVariable int id, @RequestBody Priority priority) {
+        return taskService.updatePriority(id, priority);
+    }
+
+    @PatchMapping("/todo/{id}/status")
+    public ResponseEntity<Todo> updateStatus(@PathVariable int id, @RequestBody Status status) {
+        return taskService.updateStatus(id, status);
     }
 
     @DeleteMapping("/todo/{id}")

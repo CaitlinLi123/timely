@@ -1,5 +1,6 @@
 package com.example.task.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,36 @@ public class TaskService {
         Todo taskFound = taskDao.findById(id).get();
         if (taskFound != null) {
             taskFound.setLabels(labels);
+            return new ResponseEntity<>(taskDao.save(taskFound), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity<Todo> updateDate(int id, Date date) {
+        Todo taskFound = taskDao.findById(id).get();
+        if (taskFound != null) {
+            taskFound.setDate(date);
+            return new ResponseEntity<>(taskDao.save(taskFound), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity<Todo> updatePriority(int id, Priority priority) {
+        Todo taskFound = taskDao.findById(id).get();
+        if (taskFound != null) {
+            taskFound.setPriority(priority);
+            return new ResponseEntity<>(taskDao.save(taskFound), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity<Todo> updateStatus(int id, Status status) {
+        Todo taskFound = taskDao.findById(id).get();
+        if (taskFound != null) {
+            taskFound.setStatus(status);
             return new ResponseEntity<>(taskDao.save(taskFound), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

@@ -44,7 +44,6 @@ export default function EditOneLabel(
         LabelApi.delete(`/${labelTobeEdit.id}`,labelTobeEdit).then(
             (res)=>{
                 if(res.status==200){
-                    console.log(res);
                     setUsedLabels(prev=>
                         prev.filter(label=>label.id !== labelTobeEdit.id)
                     );

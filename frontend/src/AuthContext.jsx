@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
         }else{
             navigate("/login");
         }
-        
       })
       .catch(() => {
         navigate("/login");

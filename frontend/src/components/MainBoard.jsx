@@ -1,7 +1,7 @@
 import React, { useContext, useEffect} from 'react'
 import Todo from './Todo'
 import { todoContext } from '../page/HomePage';
-import { todoApi } from '../axios';
+import { todoApi,LabelApi } from '../axios';
 
 export default function MainBoard({user}) {
   // const columns = [
@@ -9,7 +9,7 @@ export default function MainBoard({user}) {
   //   { field: 'type', headerName: 'Type', width: 150 },
   //   { field: 'status', headerName: 'Status', width: 150 },
   // ];
-  const {todos,setTodos} = useContext(todoContext);
+  const {todos,setTodos,labels,setLabels} = useContext(todoContext);
 
   useEffect(()=>{
     if (!user) return;
@@ -22,6 +22,11 @@ export default function MainBoard({user}) {
     .catch((e)=>{
       console.log(e);
     })
+    LabelApi.get(`/all/${user}`).then((res)=>{
+      setLabels(res.data);
+    }).catch((e)=>{
+      console.log(e);
+    })
   },[user])
 
   return (
@@ -32,7 +37,6 @@ export default function MainBoard({user}) {
            <Todo todo={todo}/>)
         )
       } */}
-    {/* <DataGrid rows={todos} columns={columns}/> */}
       {/* {todos? <PriorityBoard todos={todos} /> : "" } */}
 
       <ul className='divide-y divide-gray-300  divide-opacity-100'>

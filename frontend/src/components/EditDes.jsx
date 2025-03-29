@@ -7,7 +7,7 @@ import EditPartBoard from './EditPartBoard';
 export default function EditDes({description,setEditDes,id}) {
 
 const editDesc = ()=>{
-    axios.patch(`http://localhost:8000/task/${id}?description=${description}`, {
+    axios.patch(`http://localhost:8000/task/${id}/description?description=${description}`, {
         headers: {
             "Content-Type": "application/json"
         }

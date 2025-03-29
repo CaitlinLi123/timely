@@ -2,18 +2,16 @@ import React, { useState } from 'react'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { todoContext } from '../page/HomePage';
 import { useAuth } from '../AuthContext';
+import { labelContext } from './EditLabels';
 import { useContext } from 'react';
-import axios, {LabelApi} from '../axios';
+import {LabelApi} from '../axios';
 export default function CreateLabels(
-    {
-        setSelect,
-        setUsedLabels,usedLabels,
-        labels,setLables
-    }) {
-    const {colors} = useContext(todoContext);
+    ) {
+    const {colors,labels,setLabels} = useContext(todoContext);
     const [chosenColor, setChosenColor] = useState("#FCA5A5");
     const [newLabel,setNewLabel] = useState("your new label");
     const {user} = useAuth();
+    const {setSelect} = useContext(labelContext);
 
     const handleClick = ()=>{
         LabelApi.post('/create',{
@@ -24,7 +22,7 @@ export default function CreateLabels(
             (res)=>{
                 if(res.status==201){
                     const l = res.data;
-                    setLables([...labels,l]);
+                    setLabels([...labels,l]);
                 }else{
                     alert("fail to create a new label");
                 }
@@ -37,14 +35,14 @@ export default function CreateLabels(
     <>
         <div className='flex mt-[2%]'>
             <div>Labels</div>
-                <div className=''>
+
                 <button 
-                    className='rounded-full bg-red-200 cursor-pointer hover:bg-red-300'
+                    className='absolute flex items-center justify-center 
+                    right-[5%]  rounded-full bg-red-200 cursor-pointer hover:bg-red-300'
                     onClick={()=>{
                             setSelect(true)}}>
-                        <ArrowBackIosIcon />
+                        <ArrowBackIosIcon fontSize='small'/>
                     </button>
-                </div>
         </div>
         
         {/* show board */}

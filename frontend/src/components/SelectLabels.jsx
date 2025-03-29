@@ -1,28 +1,25 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import { todoContext } from '../page/HomePage';
-import { labelContext } from './Todo';
+import { editContext} from './Todo';
+import { labelContext } from './EditLabels';
 import { todoApi } from '../axios';
-import { useAuth } from '../AuthContext';
-
 
 export default function SelectLabels(
-  {labels,setSelect,
-    setLables,
-    setUsedLabels,usedLabels,todoid,setEditALabel,setLabelTobeEdit
-  }) {
-  const {colors} = useContext(todoContext);
-  const {setEditLabels} = useContext(labelContext);
-  const {user} = useAuth();
+  {todoid}) {
+  const {setLabelTobeEdit,setSelect,setEditALabel} = useContext(labelContext);
+  const {usedLabels,setUsedLabels,setEditLabels} = useContext(editContext);
+  const {labels} = useContext(todoContext);
 
+  const [tmpLabels,setTmpLabels] = useState([...usedLabels]);
+  
   const handleClick = ()=>{
-    console.log(todoid);
-    todoApi.patch(`/todo/${todoid}/label`,usedLabels).then((res)=>{
+    todoApi.patch(`/todo/${todoid}/label`,tmpLabels).then((res)=>{
       if(res.status===200){
-        // setUsedLabels(res.data.labels);
+        setUsedLabels(tmpLabels);
         alert("success to update labels");
       }else{
         alert("fail to update labels");
@@ -31,7 +28,7 @@ export default function SelectLabels(
       console.log(e);
     }).finally(setEditLabels(false));
   }
-
+  
   return (
     <>
         {/* title */}
@@ -40,13 +37,13 @@ export default function SelectLabels(
                    <div>
                     <button 
                     className='
-                    absolute
+                    absolute flex
                     right-[5%] 
                     rounded-full bg-red-200 cursor-pointer hover:bg-red-300'
                     onClick={()=>{
                             console.log("Closing EditLabels...");
                             setEditLabels(false)}}>
-                        <CloseIcon />
+                        <CloseIcon color='action'/>
                     </button>
                 </div>
                 </div>
@@ -60,7 +57,7 @@ export default function SelectLabels(
                 }}
                 // value={usedLabels.map(usedLabel=>usedLabel.name)}
                 // options={labels != null ? labels.map((label) => label.name) : []}
-                value={usedLabels} 
+                value={tmpLabels} 
                 options={labels || []}
                 getOptionLabel={(option) => option.name} 
                 renderInput={(params) => <TextField {...params} label="Labels"
@@ -73,12 +70,12 @@ export default function SelectLabels(
                     labels? labels.map(
                       (label)=>
                         <div key={label.id} className='flex gap-2'><input type="checkbox" id={label.name} name={label.name} value={label.name} 
-                        checked={usedLabels.some((usedLabel)=>usedLabel.id === label.id)}
+                        checked={tmpLabels.some((tmpLabel)=>tmpLabel.id === label.id)}
                         onChange={(e)=>{
                           if(e.target.checked){
-                            setUsedLabels([...usedLabels,label]);
+                            setTmpLabels([...tmpLabels,label]);
                           }else{
-                            setUsedLabels(usedLabels.filter((l)=>l.id!=label.id));
+                            setTmpLabels(tmpLabels.filter((l)=>l.id!=label.id));
                           }
                         }}  
                         />
@@ -129,6 +126,7 @@ export default function SelectLabels(
               bg-red-200 px-2 py-1 mb-1 
               hover:outline-none hover:ring-2 hover:ring-red-300 hover:border-transparent
               hover:bg-red-300 hover:text-white cursor-pointer'
+              onClick={() => setUsedLabels([])}
               >Clear</button>
             </div>
             

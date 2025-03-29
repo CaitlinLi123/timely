@@ -11,13 +11,8 @@ export const todoContext = createContext();
 
 export default function HomePage() {
   const {loading,user} = useAuth();
-   const [todos,setTodos] = useState(
-    [
-    ]
-   );
-
-   useEffect(()=>{
-   },[todos])
+   const [todos,setTodos] = useState([]);
+   const [labels,setLabels] = useState([]);
 
   const [showAdd, setShowAdd] = useState(false);
   const [colors,setColors] = useState([
@@ -25,7 +20,7 @@ export default function HomePage() {
   ]);
   return (
     <todoContext.Provider value={{
-      todos,setTodos,colors,setColors
+      todos,setTodos,colors,setColors,labels,setLabels
     }}>
       <div className='fixed 
       flex flex-col p-5 

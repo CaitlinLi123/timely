@@ -5,7 +5,8 @@ import EditDes from './EditDes';
 import EditLabels from './EditLabels';
 import { todoContext } from '../page/HomePage';
 
-export const labelContext = createContext();
+// export const labelContext = createContext();
+export const editContext = createContext();
 
 export default function Todo({todo}) {
    const [description, setDescription] = useState(todo.description);
@@ -17,8 +18,6 @@ export default function Todo({todo}) {
     const [hover,setHover] = useState(false);
     const [editDes, setEditDes] = useState(false);
     const [editLabels, setEditLabels] = useState(false);
-  
-    const {colors} = useContext(todoContext);
   // const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleDescriptionChange = ()=>{
@@ -52,18 +51,19 @@ export default function Todo({todo}) {
   const handleClickLabels = ()=>{
     setEditLabels(true);
   }
-
-  useEffect(()=>{
-    console.log(editLabels);
-  },[editLabels])
   
 
   return (
-    <labelContext.Provider value={{editLabels,setEditLabels}}>
-      <div className='relative grid grid-cols-7 w-full justify-items-start text-left 
+    <editContext.Provider value={{
+    editLabels,setEditLabels,
+    description,setDescription,
+    priority,setPriority,
+    usedLabels,setUsedLabels,
+    date,setDate,
+    status,setStatus,
+    }}>
+      <div className='relative grid grid-cols-7 w-full justify-items-start text-left
     my-[0.5%] px-[3%]'  key={`todo_${todo.id}`}>
-
-      {/* edit? <EditTodo todo={todo} setTodos={setTodos} todos={todos} setEdit={setEdit}/> :  */}
        <div className='flex col-span-2 hover:bg-gray-200 justify-items-start text-left' 
         type='text' id="edittodo_description" name='description' 
         onChange={(e) => setDescription(e.target.value)}
@@ -83,7 +83,7 @@ export default function Todo({todo}) {
             :""}
           </div>
         </div>
-        <div>
+        <div className='flex align-center justify-center'>
             <select name="priority" id="edittodo_priority" value={priority.toLowerCase()}
             onChange={(e) => setPriority(e.target.value)}
             >
@@ -110,10 +110,12 @@ export default function Todo({todo}) {
               {usedLabels.map(usedLabel=><div 
               className='rounded-md px-2 text-sm place-content-center' key={`usedlabels_${usedLabel.id}`}
               style={{backgroundColor:usedLabel.color}}>{usedLabel.name}</div>)}
+              {/* {tmpLabels.map(tmpLabel=><div 
+              className='rounded-md px-2 text-sm place-content-center ' key={`tmplabels_${tmpLabel.id}`}
+              style={{backgroundColor:tmpLabel.color,opacity: 0.7
+              }}>{tmpLabel.name}</div>)} */}
             </div>
             {editLabels === true? <EditLabels key={`editlabels_${todo.id}`} 
-            setEditLabels={setEditLabels} usedLabels={usedLabels} 
-            setUsedLabels={setUsedLabels}
             todoid={todo.id} /> : null}        
           </div>
         
@@ -123,15 +125,9 @@ export default function Todo({todo}) {
         onChange={(e) => setDate(e.target.value)}
         value={date ? date.split("T")[0] : "" }
         />
-       
-        <div>
-        
-        </div>
-      
-      
      
     </div>
-    </labelContext.Provider>
+    </editContext.Provider>
     
   )
 }

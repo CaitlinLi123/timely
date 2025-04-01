@@ -69,7 +69,7 @@ public class TaskController {
     }
 
     @PatchMapping("/todo/{id}/description")
-    public ResponseEntity<Todo> updateDescription(@PathVariable int id, @RequestBody String description) {
+    public ResponseEntity<Todo> updateDescription(@PathVariable int id, @RequestParam String description) {
         return taskService.updateTodoDesc(id, description);
     }
 

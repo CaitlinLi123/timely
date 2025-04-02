@@ -2,6 +2,7 @@ package com.example.task.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.task.model.FilterRequestDTO;
 import com.example.task.model.Label;
 import com.example.task.model.Priority;
 import com.example.task.model.Status;
@@ -61,6 +62,11 @@ public class TaskController {
     @GetMapping("/todos")
     public ResponseEntity<List<Todo>> getTodos(@RequestParam int page, @RequestParam int limit) {
         return taskService.getTodos(page, limit);
+    }
+
+    @PostMapping("/todos/filter")
+    public ResponseEntity<List<Todo>> getByFilter(@RequestBody FilterRequestDTO filter) {
+        return taskService.getByFilter(filter);
     }
 
     @PutMapping("/todo/{id}")

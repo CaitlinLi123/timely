@@ -30,7 +30,7 @@ export default function MainBoard({user}) {
   },[user])
 
   return (
-    <div className='h-2/3 w-full' key={"mainboard"}>
+    <div className='' key={"mainboard"}>
       {/* <BoardBar todos={todos} setTodos={setTodos}/>
       {
         todos.map(todo => (

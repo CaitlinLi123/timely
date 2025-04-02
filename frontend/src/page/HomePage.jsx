@@ -13,6 +13,7 @@ export default function HomePage() {
   const {loading,user} = useAuth();
    const [todos,setTodos] = useState([]);
    const [labels,setLabels] = useState([]);
+   const [showFilter,setShowFilter] = useState(false);
 
   const [showAdd, setShowAdd] = useState(false);
   const [colors,setColors] = useState([
@@ -20,30 +21,28 @@ export default function HomePage() {
   ]);
   return (
     <todoContext.Provider value={{
-      todos,setTodos,colors,setColors,labels,setLabels
+      todos,setTodos,colors,setColors,labels,setLabels,showFilter,setShowFilter
     }}>
-      <div className='fixed 
-      flex flex-col p-5 
-      bg-red-200 
-      h-full w-full'>
-      <AppNav />
-      <div className='rounded-lg
-      h-full w-[4/5] bg-white
-      shadow-lg 
-      my-[10px]'>
-        <div id='mainboard_table' className='
-        w-[94%] mx-[3%] mt-[20px]
-      divide-y divide-gray-300  divide-opacity-100'>
-       <BoardBar setShowAdd = {setShowAdd}/>
-      {
-        showAdd?<AddTodo setShowAdd = {setShowAdd}/>:""
-      }
-      {
-          !loading&&user? <MainBoard user={user}/> : ""
-      } 
-      </div>
-      </div>
-      <Footer />
+    <div className='relative border
+      p-5 flex flex-col 
+      bg-red-200 min-h-screen
+    min-w-screen'>
+        <AppNav />
+        <div className='flex flex-col items-center justify-center flex-grow pt-20 pb-16'>
+          <div className='w-[100%] bg-white rounded-lg shadow-lg p-4'>
+            <div id='mainboard_table' className='w-full min-h-[80vh] overflow-y-auto divide-y divide-gray-300'>
+          <BoardBar setShowAdd = {setShowAdd}/>
+          {
+            showAdd?<AddTodo setShowAdd = {setShowAdd}/>:""
+          }
+          {
+              !loading&&user? <MainBoard user={user}/> : ""
+          } 
+        </div>
+        </div>
+        </div>
+        
+        <Footer />
     </div>
     </todoContext.Provider>
     

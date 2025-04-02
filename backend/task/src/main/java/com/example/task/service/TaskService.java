@@ -4,13 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.task.dao.LabelDao;
 import com.example.task.dao.TaskDao;
-
+import com.example.task.model.FilterRequestDTO;
 import com.example.task.model.Label;
 import com.example.task.model.Priority;
 import com.example.task.model.Status;
@@ -144,6 +145,17 @@ public class TaskService {
         } else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public ResponseEntity<List<Todo>> getByFilter(FilterRequestDTO filter) {
+        try {
+            Specification<Todo> spec = TaskSpecs.filterTodos(filter);
+            List<Todo> todos = taskDao.findAll(spec);
+            return new ResponseEntity<>(todos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
 }

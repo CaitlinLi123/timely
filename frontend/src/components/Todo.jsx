@@ -104,9 +104,9 @@ export default function Todo({todo}) {
     )
   }
   
-  useEffect(()=>{
-    console.log(date);
-  },[date])
+  // useEffect(()=>{
+  //   console.log(date);
+  // },[date])
 
   return (
     <editContext.Provider value={{
@@ -159,18 +159,17 @@ export default function Todo({todo}) {
             <option value="completed">Complete</option>
         </select> 
 
-          <div className='col-span-2 relative'>
+          <div className='col-span-2 relative left-2 mr-2'>
             <div id="edittodo_labels" className='
-              cursor-pointer flex gap-2 flex-wrap'  onClick={handleClickLabels}>
-                <div className='rounded-full bg-gray-100 h-5 w-5 cursor-pointer hover:bg-gray-200
-                flex justify-center items-center'  onClick={handleClickLabels}>+</div>
-              {usedLabels.map(usedLabel=><div 
+              cursor-pointer flex flex-wrap gap-2'  onClick={handleClickLabels}>
+               <div className='rounded-full bg-gray-100 h-5 w-5 cursor-pointer hover:bg-gray-200
+                flex justify-center items-center'  onClick={handleClickLabels}>+
+                </div>
+               
+                  {usedLabels.map(usedLabel=><div 
               className='rounded-md px-2 text-sm place-content-center' key={`usedlabels_${usedLabel.id}`}
               style={{backgroundColor:usedLabel.color}}>{usedLabel.name}</div>)}
-              {/* {tmpLabels.map(tmpLabel=><div 
-              className='rounded-md px-2 text-sm place-content-center ' key={`tmplabels_${tmpLabel.id}`}
-              style={{backgroundColor:tmpLabel.color,opacity: 0.7
-              }}>{tmpLabel.name}</div>)} */}
+                
             </div>
             {editLabels === true? <EditLabels key={`editlabels_${todo.id}`} 
             todoid={todo.id} /> : null}        
@@ -178,10 +177,7 @@ export default function Todo({todo}) {
         
         
         <input type="date" id="edittodo_date" name='date' 
-        // value={date} 
         onChange={(e) => {
-          // console.log(e.target.value);
-          // setDate(e.target.value)
           handleDateChange(e.target.value);
         }}
         value={date ? date.split("T")[0] : "" }

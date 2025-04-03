@@ -4,10 +4,13 @@ import sortIcon from "../assets/sort.svg";
 import FilterPanel from './FilterPanel';
 import { todoContext } from '../page/HomePage';
 import SortPanel from './SortPanel';
+import { todoApi } from '../axios';
+import { useAuth } from '../AuthContext';
 
 export default function BoardBar({setShowAdd}) {
   const [showSort, setShowSort] = useState(false);
   const [sortMode,setSortMode] = useState(null);
+  const [haveFiltered,setHaveFiltered] = useState(false);
   const handleClick = ()=>{
     setShowAdd(true);
   }
@@ -27,6 +30,19 @@ export default function BoardBar({setShowAdd}) {
   // }
 
   const {showFilter,setShowFilter,todos,setTodos} = useContext(todoContext);
+  const {user} = useAuth();
+
+  const getAllTodos = ()=>{
+     todoApi.get(`/todos/all/${user}`)
+        .then(res=>{
+          if(res.data){
+            setTodos(res.data);
+          }
+        })
+        .catch((e)=>{
+          console.log(e);
+        })
+  }
 
   useEffect(()=>{
     switch(sortMode){
@@ -41,15 +57,20 @@ export default function BoardBar({setShowAdd}) {
 
   return (
     <div className='grid grid-cols-7 w-full  text-lg my-[5px] px-[3%] py-[5px]'>
-      <div className='col-span-2 flex relative'>
-        <button className='cursor-pointer' title='filter' onClick={()=>setShowFilter(show=>!show)}>
-            <img src={filterIcon} className='w-6 h-6'/>
-        </button>
-        {/* <button className='cursor-pointer' title='sort'>
-                  <img src={sortIcon} className='w-6 h-6'/>
-        </button> */}
-        Tasks
-        {showFilter && <FilterPanel />}
+      <div className='col-span-2 flex relative gap-2'>
+        <div className='cursor-pointer flex
+        items-center rounded-sm bg-gray-100 
+        border border-gray-100 ' title='filter'>
+            <img src={filterIcon} className='w-6 h-full hover:bg-gray-200 p-[2px]' 
+            onClick={()=>{setShowFilter(show=>!show)}}/>
+            {haveFiltered && <div className='text-sm hover:bg-gray-200 h-full
+            flex items-center px-2
+            ' onClick={()=>{
+              getAllTodos();
+              setHaveFiltered(false)}}>Clear All</div>}
+        </div>
+        <div>Tasks</div>
+        {showFilter && <FilterPanel setHaveFiltered={setHaveFiltered}/>}
       </div>
       <div>Priority</div>
       <div>Status</div>

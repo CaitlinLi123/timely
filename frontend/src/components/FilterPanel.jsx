@@ -4,7 +4,7 @@ import { todoContext } from "../page/HomePage";
 import { useAuth } from "../AuthContext";
 import { todoApi } from "../axios";
 
-export default function FilterPanel() {
+export default function FilterPanel({setHaveFiltered}) {
   const [filterStatus,setFilterStatus] = useState([]);
   const [filterDue,setFilterDue] = useState([]);
   const [filterPriority,setFilterPriority] = useState([]);
@@ -24,6 +24,7 @@ export default function FilterPanel() {
     todoApi.post("/todos/filter",filter).then((res)=>{
       if(res.status==200){
         setTodos(res.data);
+        setHaveFiltered(true);
       }else{
         console.log(res);
       }
@@ -47,7 +48,7 @@ export default function FilterPanel() {
         {/* title */}
         <div className="w-full py-1 px-2 text-center 
         border-b border-b-gray-200">
-          <button className="absolute right-2 bg-black w-6 h-6 m-auto cursor-pointer">
+          <button className="absolute right-2 hover:bg-gray-200 p-[2px] rounded-md w-6 h-6 m-auto cursor-pointer">
             <img src={closeIcon} onClick={()=>setShowFilter(false)}/>
           </button>
           <div>Filter</div>

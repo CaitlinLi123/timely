@@ -24,13 +24,13 @@ export default function HomePage() {
       todos,setTodos,colors,setColors,labels,setLabels,showFilter,setShowFilter
     }}>
     <div className='relative border
-      p-5 flex flex-col 
+      px-5 flex flex-col 
       bg-red-200 min-h-screen
     min-w-screen'>
         <AppNav />
-        <div className='flex flex-col items-center justify-center flex-grow pt-20 pb-16'>
+        <div className=' flex flex-col items-center justify-center flex-grow pt-20 pb-16'>
           <div className='w-[100%] bg-white rounded-lg shadow-lg p-4'>
-            <div id='mainboard_table' className='w-full min-h-[80vh] overflow-y-auto divide-y divide-gray-300'>
+            <div id='mainboard_table' className='w-full h-[75vh] overflow-y-auto divide-y divide-gray-300'>
           <BoardBar setShowAdd = {setShowAdd}/>
           {
             showAdd?<AddTodo setShowAdd = {setShowAdd}/>:""

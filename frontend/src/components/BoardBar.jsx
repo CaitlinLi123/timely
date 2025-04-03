@@ -76,8 +76,8 @@ export default function BoardBar({setShowAdd}) {
       <div>Status</div>
       
       <div className='col-span-2'>Labels</div>
-      <div className='flex relative'>
-         <button className='cursor-pointer' title='sort' onClick={()=>setShowSort(true)}>
+      <div className='flex relative gap-2'>
+         <button className='cursor-pointer bg-gray-100 hover:bg-gray-200 rounded-sm p-[2px]' title='sort' onClick={()=>setShowSort(true)}>
                   <img src={sortIcon} className='w-6 h-6'/>
         </button>
         Due Date

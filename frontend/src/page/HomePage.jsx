@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import MainBoard from "../components/MainBoard";
 import AppNav from "../components/AppNav";
 import BoardBar from '../components/BoardBar';

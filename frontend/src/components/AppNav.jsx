@@ -20,10 +20,7 @@ export default function AppNav() {
   },[user])
 
   return (
-    <div className='
-    absolute top-0 left-0 py-3 px-4 z-10 
-    w-full h-[6vh] grid grid-cols-4 
-    bg-red-300 text-white border-b border-white'>
+    <div className='flex w-full flex-col grid grid-cols-4 justify-center items-center'>
       <div className=' justify-self-start  text-2xl col-span-3'>To do list</div>
       <div className='grid grid-cols-2 divide-x place-content-center'>
         <button className='flex justify-center gap-2 items-center cursor-pointer'>
@@ -32,9 +29,11 @@ export default function AppNav() {
       {/* User Avatars: username's first letter */}
       <div className='relative justify-self-center flex items-center place-content-center gap-3'>
         {!loading &&
-        <Avatar sx={{ bgcolor: deepPurple[500] }} 
+        <div 
+        className='bg-light-green rounded-full h-10 w-10 text-black flex font-bold text-2xl
+        justify-center'
         onClick={()=>{setShowUserProfilePanel(show=>!show)}}
-        sizes='small'>{avatarLetter[0]}</Avatar>}
+        >{avatarLetter[0]}</div>}
 
         {showUserProfilePanel && <ProfilePanel />}
       </div>

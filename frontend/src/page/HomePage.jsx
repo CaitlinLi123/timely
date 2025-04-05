@@ -23,13 +23,15 @@ export default function HomePage() {
     <todoContext.Provider value={{
       todos,setTodos,colors,setColors,labels,setLabels,showFilter,setShowFilter
     }}>
-    <div className='relative border
-      px-5 flex flex-col 
-      bg-red-200 min-h-screen
-    min-w-screen'>
+    <div className='relative border flex 
+      px-5 bg-cream h-screen w-screen'>
+      <div className="fixed h-[6vh] top-0 left-0 py-3 px-4 z-10 w-screen
+          bg-coffee-100 text-white border-b border-white">
         <AppNav />
+      </div>
+        
         <div className=' flex flex-col items-center justify-center flex-grow pt-20 pb-16'>
-          <div className='w-[100%] bg-white rounded-lg shadow-lg p-4'>
+          <div className='w-[85%] bg-white rounded-lg shadow-lg p-4'>
             <div id='mainboard_table' className='w-full h-[75vh] overflow-y-auto divide-y divide-gray-300'>
           <BoardBar setShowAdd = {setShowAdd}/>
           {
@@ -41,8 +43,10 @@ export default function HomePage() {
         </div>
         </div>
         </div>
+        <div className='fixed h-[3vh] left-0 bottom-0'>
+          <Footer />
+        </div>
         
-        <Footer />
     </div>
     </todoContext.Provider>
     

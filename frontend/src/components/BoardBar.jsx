@@ -89,10 +89,10 @@ export default function BoardBar({setShowAdd}) {
       {/* <Button variant="contained" onClick={handleClick}>
         Add a Task
       </Button> */}
-      <button className='fixed left-[3%] bottom-[100px] shadow-md p-[4px] rounded-lg
-      bg-red-200
-      hover:outline-none hover:ring-2 hover:ring-red-300 hover:border-transparent
-      hover:bg-red-300 hover:text-white cursor-pointer z-20' onClick={handleClick}
+      <button className='absolute left-[10%] bottom-[100px] shadow-md p-[4px] rounded-lg
+      bg-light-pink transition font-bold
+      hover:outline-none hover:ring-2 hover:ring-red-400 hover:border-transparent
+      hover:bg-red-400 hover:text-white cursor-pointer z-20' onClick={handleClick}
       >
         +Add a task</button>
       </div>

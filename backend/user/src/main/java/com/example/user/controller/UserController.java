@@ -1,11 +1,17 @@
 package com.example.user.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.user.model.User;
@@ -44,39 +50,23 @@ public class UserController {
 
     @PostMapping("login")
     public ResponseEntity<String> login(@RequestBody User user, HttpServletResponse response) {
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        if (authentication.isAuthenticated()) {
-            // return new ResponseEntity<>(jwtService.generateToken(user.getUsername()),
-            // HttpStatus.OK);
-            String token = jwtService.generateToken(user.getUsername());
-            Cookie jwtCookie = new Cookie("jwt", token);
-            jwtCookie.setHttpOnly(true);// Prevent JavaScript access
-            jwtCookie.setSecure(false);// Set to true in production (HTTPS only)
-            jwtCookie.setPath("/");
-            jwtCookie.setMaxAge(259200);
-            // jwtCookie.setAttribute("SameSite", "None");
-            response.addCookie(jwtCookie);
-            return ResponseEntity.ok("Login successful");
-        }
-
-        else {
-            return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
-        }
-
+        return userService.login(user, response);
     }
 
     @GetMapping("/validate")
-    public String checkCookie(HttpServletRequest request) {
+    public ResponseEntity<String> checkCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("jwt".equals(cookie.getName())) {
-                    return jwtService.extractUserName(cookie.getValue());
+                    return new ResponseEntity<>(jwtService.extractUserName(cookie.getValue()), HttpStatus.OK);
                 }
             }
+            ;
+        } else {
+            return new ResponseEntity<>("No cookie sent", HttpStatus.BAD_REQUEST);
         }
-        return null;
+        return new ResponseEntity<>("No username found in db", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/logout")
@@ -93,6 +83,20 @@ public class UserController {
         response.addCookie(cookie);
 
         return new ResponseEntity<>("logout successful!", HttpStatus.OK);
+    }
+
+    @GetMapping("/oauth2/user-info")
+    public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal OAuth2User principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("name", principal.getAttribute("name"));
+        userInfo.put("email", principal.getAttribute("email"));
+        // userInfo.put("picture", principal.getAttribute("picture"));
+        // Add any other attributes you need
+
+        return ResponseEntity.ok(userInfo);
     }
 
 }

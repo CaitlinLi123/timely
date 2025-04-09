@@ -84,7 +84,7 @@ export default function LoginPage() {
             >
               Login
             </button>
-            <div>Oauth placeholder</div>
+            <div>Or continue with</div>
           </form>
         </div>
       </div>

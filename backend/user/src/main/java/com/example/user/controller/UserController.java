@@ -14,7 +14,9 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.user.model.OauthResponse;
 import com.example.user.model.User;
+import com.example.user.model.validateResponse;
 import com.example.user.service.JwtService;
 import com.example.user.service.UserService;
 
@@ -54,19 +56,8 @@ public class UserController {
     }
 
     @GetMapping("/validate")
-    public ResponseEntity<String> checkCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("jwt".equals(cookie.getName())) {
-                    return new ResponseEntity<>(jwtService.extractUserName(cookie.getValue()), HttpStatus.OK);
-                }
-            }
-            ;
-        } else {
-            return new ResponseEntity<>("No cookie sent", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>("No username found in db", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<validateResponse> checkCookie(HttpServletRequest request) {
+        return userService.validate(request);
     }
 
     @GetMapping("/logout")
@@ -85,18 +76,11 @@ public class UserController {
         return new ResponseEntity<>("logout successful!", HttpStatus.OK);
     }
 
+    // after authenticated from google
     @GetMapping("/oauth2/user-info")
-    public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal OAuth2User principal) {
-        if (principal == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("name", principal.getAttribute("name"));
-        userInfo.put("email", principal.getAttribute("email"));
-        // userInfo.put("picture", principal.getAttribute("picture"));
-        // Add any other attributes you need
-
-        return ResponseEntity.ok(userInfo);
+    public ResponseEntity<OauthResponse> getUserInfo(@AuthenticationPrincipal OAuth2User principal,
+            HttpServletResponse response) {
+        return userService.oauth2WithGoogle(principal, response);
     }
 
 }

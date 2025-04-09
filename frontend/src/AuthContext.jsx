@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState("alice");
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -13,27 +13,25 @@ export const AuthProvider = ({ children }) => {
     axios
       .get("http://localhost:5000/validate", { withCredentials: true })
       .then((res) => {
-        console.log("get the response");
-        console.log(res);
-        let username = res.data;
-        if (username != null) {
-          setUser(username);
+        let userFound = res.data.user;
+        if (userFound != null) {
+          setUser(userFound);
           navigate("/");
         } else {
           navigate("/login");
         }
       })
       .catch((error) => {
-        console.log("error:");
-        console.log(error);
         navigate("/login");
       })
       .finally(() => setLoading(false));
   };
 
-  // useEffect(() => {
-  //   validate();
-  // }, []);
+  useEffect(() => {
+    if (user == null) {
+      validate();
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser, loading, validate }}>

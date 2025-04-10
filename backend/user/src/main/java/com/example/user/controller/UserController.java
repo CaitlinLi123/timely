@@ -83,14 +83,9 @@ public class UserController {
         return userService.oauth2WithGoogle(principal, response);
     }
 
-    @GetMapping("/link-google-account-authorize")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
-    }
-
     @PostMapping("/link-google-account")
     public ResponseEntity<String> getMethodName(@RequestBody User user) {
-        return userService.linkGoogleAccountWithId(user);
+        return userService.linkGoogleAccount(user);
     }
 
 }

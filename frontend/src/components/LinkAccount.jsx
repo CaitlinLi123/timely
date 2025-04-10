@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { authApi } from "../axios";
 import { useNavigate } from "react-router-dom";
 
@@ -6,16 +6,37 @@ export default function LinkAccount({ userFound }) {
   const navigate = useNavigate();
   const [link, setLink] = useState(false);
   const [pwd, setPwd] = useState("");
+
   const handleLinkAccount = (pwd) => {
     userFound["password"] = pwd;
-    authApi.post("/login", { withCredentials: true }, userFound).then((res) => {
-      if (res.status === 200) {
-        alert("success");
-        navigate("/login");
-      } else {
-        alert(res.data);
-      }
-    });
+    console.log(userFound);
+    authApi
+      .post("/login", userFound, { withCredentials: true })
+      .then((res) => {
+        if (res.status === 200) {
+          // succeed in logging in
+          authApi
+            .post("/link-google-account", userFound, { withCredentials: true })
+            .then((res) => {
+              if (res.status === 200) {
+                alert(
+                  "succeed in linking your account to your google account!"
+                );
+                navigate("/");
+              } else {
+                console.log(res.data);
+              }
+            });
+        } else {
+          alert(res.data.data);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   return (
@@ -66,7 +87,9 @@ export default function LinkAccount({ userFound }) {
             </div>
             <button
               className="rounded-md  border border-gray-400 hover:bg-gray-300 px-3 font-bold text-lg h-[30px] w-[50%] cursor-pointer"
-              onClick={handleLinkAccount}
+              onClick={() => {
+                handleLinkAccount(pwd);
+              }}
             >
               Submit
             </button>

@@ -97,6 +97,7 @@ public class UserService {
             }
         } else {
             // use oauth2
+            System.out.println(user);
             return new ResponseEntity<>("Please direct user to use oauth2 login", HttpStatus.BAD_REQUEST);
         }
 
@@ -176,7 +177,7 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<String> linkGoogleAccountWithId(User user) {
+    public ResponseEntity<String> linkGoogleAccount(User user) {
         try {
             dao.save(user);
             return new ResponseEntity<>("success", HttpStatus.OK);

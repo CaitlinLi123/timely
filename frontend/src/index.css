@@ -1,2 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+    --color-coffee-100: oklch(63.18% 0.036 359.15);
+    --color-cream: oklch(93.98% 0.033 46.40);
+    --color-light-green: oklch(90.35% 0.013 159.89);
+    --color-light-pink: oklch(88.82% 0.061 5.75);
+    --color-pink: oklch(81.57% 0.086 9.04);
+}

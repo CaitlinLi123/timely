@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,7 +36,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:5173")); // React frontend
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "x-auth-token"));
+        config.setExposedHeaders(List.of("x-auth-token"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -49,13 +51,24 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable()) // Disable CSRF
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/register", "/login", "/logout").permitAll()
+                        .requestMatchers("/register", "/login", "/logout", "/validate", "/oauth2/authorization/**",
+                                "/login/oauth2/code/**")
+                        .permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())
+                // .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:5173/",
+                // true))
+                .oauth2Login(oauth2 -> {
+                    oauth2.successHandler((request, response, authentication) -> {
+                        // Redirect to frontend with token
+                        response.sendRedirect("http://localhost:5173/oauth");
+                    });
+                })
                 .httpBasic(basic -> basic.disable())
                 // .formLogin(form -> form.disable())
                 .logout(logout -> logout.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // Allow sessions for OAuth2
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

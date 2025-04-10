@@ -84,15 +84,22 @@ public class UserService {
     }
 
     public ResponseEntity<String> login(User user, HttpServletResponse response) {
-        String username = dao.findByEmail(user.getEmail()).getUsername();
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(username, user.getPassword()));
-        if (authentication.isAuthenticated()) {
-            addTokenToResponse(username, response);
-            return ResponseEntity.ok("Login successful");
+        if (user.getPassword() != null) {
+            // use normal authentication method to login
+            String username = dao.findByEmail(user.getEmail()).getUsername();
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(username, user.getPassword()));
+            if (authentication.isAuthenticated()) {
+                addTokenToResponse(username, response);
+                return ResponseEntity.ok("Login successful");
+            } else {
+                return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+            }
         } else {
-            return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+            // use oauth2
+            return new ResponseEntity<>("Please direct user to use oauth2 login", HttpStatus.BAD_REQUEST);
         }
+
     }
 
     public ResponseEntity<OauthResponse> oauth2WithGoogle(OAuth2User principal, HttpServletResponse response) {
@@ -128,6 +135,7 @@ public class UserService {
         } else {
             // ask the user whether to link to the existing account;
             if (userInDB.getGoogleid() == null) {
+                userInDB.setGoogleid(googleid);
                 return new ResponseEntity<>(new OauthResponse(userInDB,
                         "There's no google account linked to an exisiting user. Ask the user to link the account"),
                         HttpStatus.OK);
@@ -165,6 +173,15 @@ public class UserService {
             return new ResponseEntity<>(new validateResponse(null, "No username found in db"), HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>(new validateResponse(null, "No cookie sent"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity<String> linkGoogleAccountWithId(User user) {
+        try {
+            dao.save(user);
+            return new ResponseEntity<>("success", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Fail to link your google account", HttpStatus.BAD_REQUEST);
         }
     }
 }

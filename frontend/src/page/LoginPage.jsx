@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Footer from "../components/Footer";
 import background from "../assets/login-background.jpg";
+import LoginWithGoogle from "../components/LoginWithGoogle";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -84,7 +85,10 @@ export default function LoginPage() {
             >
               Login
             </button>
-            <div>Or continue with</div>
+            <div className="flex items-center justify-center text-sm">
+              <span>Or continue with</span>
+            </div>
+            <LoginWithGoogle />
           </form>
         </div>
       </div>

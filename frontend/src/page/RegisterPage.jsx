@@ -4,6 +4,7 @@ import background from "../assets/register-background.jpg";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../axios";
 import { useAuth } from "../AuthContext";
+import LoginWithGoogle from "../components/LoginWithGoogle";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
@@ -45,11 +46,6 @@ export default function RegisterPage() {
     };
 
     getToken(user);
-  };
-
-  const handleGoogleLogin = () => {
-    // Redirect to Spring Boot OAuth2 login endpoint
-    window.location.href = "http://localhost:5000/oauth2/authorization/google";
   };
 
   return (
@@ -126,12 +122,10 @@ export default function RegisterPage() {
             >
               Register
             </button>
-            <div
-              onClick={handleGoogleLogin}
-              className="w-full font-bold text-white bg-red-400 p-3 rounded-lg hover:bg-red-600 transition cursor-pointer"
-            >
-              Sign in with Google
+            <div className="flex items-center justify-center text-sm">
+              <span>Or continue with</span>
             </div>
+            <LoginWithGoogle />
           </form>
         </div>
       </div>

@@ -15,7 +15,7 @@ export default function AppNav() {
 
   useEffect(() => {
     if (user != null) {
-      setAvatarLetter(user[0]);
+      setAvatarLetter(user.username[0]);
     } else {
       setAvatarLetter("");
     }
@@ -33,13 +33,15 @@ export default function AppNav() {
         <div className="relative justify-self-center flex items-center place-content-center gap-3">
           {!loading && (
             <div
-              className="bg-light-green rounded-full h-10 w-10 text-black flex font-bold text-2xl
-        justify-center"
+              className="
+              flex
+              bg-light-green rounded-full h-10 w-10 text-black flex font-bold text-2xl
+        justify-center items-center text-center"
               onClick={() => {
                 setShowUserProfilePanel((show) => !show);
               }}
             >
-              {/* {avatarLetter[0]} */}
+              {avatarLetter[0]}
             </div>
           )}
 

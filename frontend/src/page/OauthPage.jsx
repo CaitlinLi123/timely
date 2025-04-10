@@ -7,7 +7,9 @@ import LinkAccount from "../components/LinkAccount";
 export default function OauthPage() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
+  const [message, setMessage] = useState(null);
   const [linkAccount, setLinkAccount] = useState(false);
+  const [userFound, setUserFound] = useState(null);
 
   useEffect(() => {
     authApi.get("/oauth2/user-info", { withCredentials: true }).then((res) => {
@@ -21,8 +23,12 @@ export default function OauthPage() {
         if (res.data.message === "OK to log in") {
           setUser(res.data.user);
           navigate("/");
-        } else {
+        } else if (
+          res.data.message.startsWith("There's no google account linked")
+        ) {
           setLinkAccount(true);
+          setUserFound(res.data.user);
+          setMessage(res.data.message);
         }
       } else {
         alert(e);
@@ -32,9 +38,9 @@ export default function OauthPage() {
   }, []);
 
   return (
-    <div>
-      OauthPage
-      {linkAccount && <LinkAccount />}
+    <div className="w-screen h-screen flex justify-center items-center">
+      {/* {message} */}
+      {linkAccount && <LinkAccount userFound={userFound} />}
     </div>
   );
 }

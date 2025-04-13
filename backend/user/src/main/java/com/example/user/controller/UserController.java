@@ -88,4 +88,14 @@ public class UserController {
         return userService.linkGoogleAccount(user);
     }
 
+    @GetMapping("/forget-password")
+    public ResponseEntity<String> forgetPassword(@RequestParam String email) {
+        return userService.sendEmail(email);
+    }
+
+    @GetMapping("/validate-recovery-path")
+    public ResponseEntity<String> getMethodName(@RequestParam String token) {
+        return userService.validateRecoveryPath(token);
+    }
+
 }

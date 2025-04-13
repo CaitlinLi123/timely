@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/register", "/login", "/logout", "/validate", "/oauth2/authorization/**",
-                                "/login/oauth2/code/**")
+                                "/login/oauth2/code/**", "forget-password")
                         .permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())

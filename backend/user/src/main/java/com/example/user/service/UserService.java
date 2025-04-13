@@ -13,6 +13,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,6 +29,7 @@ import com.example.user.model.User;
 import com.example.user.model.UserDto;
 import com.example.user.model.validateResponse;
 
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,12 +41,15 @@ public class UserService {
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final JavaMailSender mailSender;
 
     @Autowired
-    public UserService(UserDao dao, AuthenticationManager authenticationManager, JwtService jwtService) {
+    public UserService(UserDao dao, AuthenticationManager authenticationManager, JwtService jwtService,
+            JavaMailSender mailSender) {
         this.dao = dao;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.mailSender = mailSender;
     }
 
     private String generateRandomUsernameSurfix() {
@@ -183,6 +190,57 @@ public class UserService {
             return new ResponseEntity<>("success", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Fail to link your google account", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity<String> sendEmail(String toEmail) {
+        // first find whether the email is in db
+        try {
+            User userFound = dao.findByEmail(toEmail);
+            if (userFound != null) {
+                MimeMessage message = mailSender.createMimeMessage();
+
+                MimeMessageHelper helper = new MimeMessageHelper(message);
+
+                helper.setFrom("liyu3519@gmail.com");
+                helper.setTo(toEmail);
+
+                String token = jwtService.generateRecoverPwdToken(toEmail);
+                String htmlBody = """
+                        <h1>Reset Your Password</h1>
+                        <p>Hello,</p>
+                        <p>Click the link below to reset your password:</p>
+                        <a href=
+                        "https://localhost:5173/reset?token=
+                        """ + token +
+                        """
+                                ">Reset Password</a>
+                                <br><br>
+                                <p>Thanks,<br>Timely Team</p>
+                                """;
+                helper.setText(htmlBody, true);
+
+                helper.setSubject("Reset your password");
+
+                mailSender.send(message);
+                System.out.println("mail sent successfully....");
+                return new ResponseEntity<>("Success in sending the recovery email", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("We don't have this account in our app.", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Something goes wrong" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    public ResponseEntity<String> validateRecoveryPath(String token) {
+        try {
+            String email = jwtService.extractEmail(token);
+            return new ResponseEntity<>(email, HttpStatus.OK);
+        } catch (Exception e) {
+
+            return new ResponseEntity<>("Something goes wrong" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

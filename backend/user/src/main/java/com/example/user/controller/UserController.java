@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.user.model.OauthResponse;
+import com.example.user.model.ResetPwdDto;
 import com.example.user.model.User;
 import com.example.user.model.validateResponse;
 import com.example.user.service.JwtService;
@@ -94,8 +95,13 @@ public class UserController {
     }
 
     @GetMapping("/validate-recovery-path")
-    public ResponseEntity<String> getMethodName(@RequestParam String token) {
-        return userService.validateRecoveryPath(token);
+    public ResponseEntity<String> getMethodName(@RequestParam String token, HttpServletResponse response) {
+        return userService.validateRecoveryPath(token, response);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPwdDto resetPwdDto, HttpServletResponse response) {
+        return userService.resetPassword(resetPwdDto, response);
     }
 
 }

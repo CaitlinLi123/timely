@@ -7,6 +7,7 @@ import RegisterPage from "./page/RegisterPage";
 import { AuthProvider, useAuth } from "./AuthContext";
 import OauthPage from "./page/OauthPage";
 import ForgetPwdPage from "./page/ForgetPwdPage";
+import ResetPwdPage from "./page/ResetPwdPage";
 
 function App() {
   // if not authenticated, then redirect to login page
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />}></Route>
           <Route path="/oauth" element={<OauthPage />}></Route>
           <Route path="/forget-password" element={<ForgetPwdPage />}></Route>
+          <Route path="/reset" element={<ResetPwdPage />}></Route>
         </Routes>
       </AuthProvider>
     </BrowserRouter>

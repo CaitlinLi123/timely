@@ -3,7 +3,13 @@ import axios from "./axios";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const AuthContext = createContext();
-const PUBLIC_ROUTES = ["/login", "/register", "/oauth", "/forget-password"];
+const PUBLIC_ROUTES = [
+  "/login",
+  "/register",
+  "/oauth",
+  "/forget-password",
+  "/reset",
+];
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);

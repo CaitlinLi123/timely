@@ -66,9 +66,17 @@ export default function HomePage() {
               bg-rose-100
               "
             >
-              <BoardBar setShowAdd={setShowAdd} />
-              {showAdd ? <AddTodo setShowAdd={setShowAdd} /> : ""}
-              {!loading && user ? <MainBoard user={user} /> : ""}
+              {/* <BoardBar setShowAdd={setShowAdd} /> */}
+              {/* {showAdd ? <AddTodo setShowAdd={setShowAdd} /> : ""} */}
+              {!loading && user ? (
+                <MainBoard
+                  user={user}
+                  setShowAdd={setShowAdd}
+                  showAdd={showAdd}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

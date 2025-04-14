@@ -2,8 +2,10 @@ import React, { useContext, useEffect } from "react";
 import Todo from "./Todo";
 import { todoContext } from "../page/HomePage";
 import { todoApi, LabelApi } from "../axios";
+import BoardBar from "./BoardBar";
+import AddTodo from "./AddTodo";
 
-export default function MainBoard({ user }) {
+export default function MainBoard({ user, setShowAdd, showAdd }) {
   // const columns = [
   //   { field: 'description', headerName: 'Description', width: 150 },
   //   { field: 'type', headerName: 'Type', width: 150 },
@@ -41,8 +43,9 @@ export default function MainBoard({ user }) {
         )
       } */}
       {/* {todos? <PriorityBoard todos={todos} /> : "" } */}
-
-      <ul className="divide-y divide-gray-300 divide-opacity-100">
+      <BoardBar setShowAdd={setShowAdd} />
+      {showAdd ? <AddTodo setShowAdd={setShowAdd} /> : ""}
+      <ul className="divide-y divide-primary/30 divide-opacity-100">
         {todos != null
           ? todos.map((todo) => (
               <li key={todo.id}>

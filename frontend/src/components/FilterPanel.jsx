@@ -3,6 +3,7 @@ import closeIcon from "../assets/close.svg";
 import { todoContext } from "../page/HomePage";
 import { useAuth } from "../AuthContext";
 import { todoApi } from "../axios";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function FilterPanel({ setHaveFiltered }) {
   const [filterStatus, setFilterStatus] = useState([]);
@@ -53,16 +54,23 @@ export default function FilterPanel({ setHaveFiltered }) {
         {/* title */}
         <div
           className="w-full py-1 px-2 text-center 
-        border-b border-b-gray-200"
+        border-b border-b-gray-300"
         >
-          <button className="absolute right-2 hover:bg-gray-200 p-[2px] rounded-md w-6 h-6 m-auto cursor-pointer">
-            <img src={closeIcon} onClick={() => setShowFilter(false)} />
-          </button>
-          <div>Filter</div>
+          <span
+            className="absolute flex 
+          w-6 h-6 rounded-full right-2
+          cursor-pointer hover:bg-tertiary hover:text-white transition
+          "
+            onClick={() => setShowFilter(false)}
+          >
+            <CloseIcon />
+          </span>
+
+          <div className="font-bold text-xl">Filter</div>
         </div>
         {/* status */}
-        <div className="w-full py-1 px-2 border-b border-b-gray-200">
-          <div>Status</div>
+        <div className="w-full py-1 px-2 border-b border-gray-300">
+          <div className="font-bold">Status</div>
           <div>
             {["Pending", "In_Progress", "Completed"].map((s) => (
               <div key={`filter_status_${s}`} className="flex gap-2">
@@ -98,8 +106,8 @@ export default function FilterPanel({ setHaveFiltered }) {
           </div>
         </div>
         {/* due date */}
-        <div className="w-full py-1 px-2 border-b border-b-gray-200">
-          <div>Due Date</div>
+        <div className="w-full py-1 px-2 border-b border-gray-300">
+          <div className="font-bold">Due Date</div>
           <div>
             {[
               "Overdue",
@@ -136,8 +144,8 @@ export default function FilterPanel({ setHaveFiltered }) {
           </div>
         </div>
         {/* priority */}
-        <div className="w-full py-1 px-2 border-b border-b-gray-200">
-          <div>Priority</div>
+        <div className="w-full py-1 px-2 border-b border-gray-300">
+          <div className="font-bold">Priority</div>
           <div>
             {["High", "Medium", "Low"].map((priority) => (
               <div key={`filter_priority_${priority}`} className="flex gap-2">
@@ -173,8 +181,8 @@ export default function FilterPanel({ setHaveFiltered }) {
           </div>
         </div>
         {/* labels */}
-        <div className="w-full pt-1 pb-2 px-2 border-b border-b-gray-200">
-          <div>Labels</div>
+        <div className="w-full pt-1 pb-2 px-2 border-b border-gray-300">
+          <div className="font-bold">Labels</div>
           <div className="flex flex-wrap gap-2">
             {labels
               ? labels.map((label) => (
@@ -217,13 +225,17 @@ export default function FilterPanel({ setHaveFiltered }) {
         <div className="w-full sticky bottom-0 py-1 px-2">
           <div className="flex justify-between w-full px-3 py-2">
             <button
-              className="bg-red-200 rounded-lg px-2"
+              className="bg-tertiary hover:bg-primary hover:text-white
+              font-bold cursor-pointer
+              rounded-lg px-2"
               onClick={handleSubmit}
             >
               Submit
             </button>
             <button
-              className="bg-red-200 rounded-lg px-2"
+              className="bg-tertiary hover:bg-primary hover:text-white
+              cursor-pointer
+              font-bold rounded-lg px-2"
               onClick={handleClear}
             >
               Clear

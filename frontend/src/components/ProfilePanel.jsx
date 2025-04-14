@@ -30,11 +30,11 @@ export default function ProfilePanel({ setShowUserProfilePanel }) {
     border border-gray-200 flex flex-col p-3"
     >
       {/* title */}
-      <div className="text-lg font-bold text-center text-primary border-b border-b-primary">
+      <div className="text-lg font-bold text-center text-primary border-b border-gray-300">
         Account
         {/* close button */}
         <span
-          className="absolute right-3 top-3 rounded-full transition hover:bg-last h-6 w-6
+          className="absolute right-3 top-3 rounded-full transition hover:bg-tertiary h-6 w-6
          flex items-center justify-center cursor-pointer hover:text-white "
           onClick={() => {
             setShowUserProfilePanel(false);
@@ -48,7 +48,7 @@ export default function ProfilePanel({ setShowUserProfilePanel }) {
       <div
         className="flex gap-2 py-[10px] 
         items-center justify-center
-      border-b border-primary"
+      border-b border-gray-300"
       >
         {/* Avatar */}
         <div

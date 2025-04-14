@@ -66,7 +66,7 @@ export default function BoardBar({ setShowAdd }) {
     <div
       className="
      grid grid-cols-7 w-full text-lg my-[5px] px-[3%] py-[5px]
-     border-b-2 border-last font-bold flex items-center
+     border-b-2 border-last flex items-center
     "
     >
       <div className="col-span-2 flex relative gap-2 items-center">
@@ -87,8 +87,8 @@ export default function BoardBar({ setShowAdd }) {
           </span>
           {haveFiltered && (
             <div
-              className="text-sm hover:bg-gray-200 h-full
-            flex items-center px-2
+              className="text-sm hover:bg-tertiary rounded-lg h-full
+            flex items-center px-2 ml-1
             "
               onClick={() => {
                 getAllTodos();
@@ -99,13 +99,13 @@ export default function BoardBar({ setShowAdd }) {
             </div>
           )}
         </div>
-        <div>Tasks</div>
+        <div className="font-bold">Tasks</div>
         {showFilter && <FilterPanel setHaveFiltered={setHaveFiltered} />}
       </div>
-      <div>Priority</div>
-      <div>Status</div>
+      <div className="font-bold">Priority</div>
+      <div className="font-bold">Status</div>
 
-      <div className="col-span-2">Labels</div>
+      <div className="col-span-2 font-bold">Labels</div>
       <div className="flex relative gap-2">
         <span
           className="cursor-pointer 
@@ -116,7 +116,7 @@ export default function BoardBar({ setShowAdd }) {
         >
           <SortIcon />
         </span>
-        Due
+        <span className="font-bold">Due</span>
         {showSort && (
           <SortPanel setShowSort={setShowSort} setSortMode={setSortMode} />
         )}

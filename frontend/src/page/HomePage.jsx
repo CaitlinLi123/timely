@@ -43,11 +43,11 @@ export default function HomePage() {
     >
       <div
         className="relative border flex 
-      px-5 bg-cream h-screen w-screen"
+      px-5 bg-last h-screen w-screen"
       >
         <div
           className="fixed h-[6vh] top-0 left-0 py-3 px-4 z-10 w-screen
-          bg-coffee-100 text-white border-b border-white"
+          bg-secondary text-white border-b border-white"
         >
           <AppNav />
         </div>

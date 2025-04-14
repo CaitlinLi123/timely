@@ -42,7 +42,7 @@ export default function MainBoard({ user }) {
       } */}
       {/* {todos? <PriorityBoard todos={todos} /> : "" } */}
 
-      <ul className="divide-y divide-gray-300  divide-opacity-100">
+      <ul className="divide-y divide-gray-300 divide-opacity-100">
         {todos != null
           ? todos.map((todo) => (
               <li key={todo.id}>

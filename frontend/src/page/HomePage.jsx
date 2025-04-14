@@ -42,22 +42,28 @@ export default function HomePage() {
       }}
     >
       <div
-        className="relative border flex font-mono
-      px-5 bg-tertiary h-screen w-screen"
+        className="relative flex flex-col font-mono
+       bg-tertiary h-screen w-screen gap-4"
       >
+        {/* navigation bar */}
         <div
-          className="fixed h-[6vh] top-0 left-0 py-3 px-4 z-10 w-screen
-          bg-secondary text-white border-b border-white"
+          className="w-screen
+          bg-secondary text-white"
         >
           <AppNav />
         </div>
 
-        <div className=" flex flex-col items-center w-screen justify-center flex-grow pt-20 pb-16">
-          <div className="w-[85%] h-[85vh] shadow-lg bg-white rounded-lg">
+        {/* main board */}
+        <div
+          className=" flex flex-col 
+        items-center justify-center flex-grow
+        w-screen "
+        >
+          <div className="w-[95%] h-full shadow-lg rounded-lg">
             <div
               id="mainboard_table"
               className="w-full h-full rounded-lg overflow-y-auto divide-y divide-primary
-              bg-last/60
+              bg-rose-100
               "
             >
               <BoardBar setShowAdd={setShowAdd} />
@@ -66,7 +72,9 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        <div className="fixed h-[3vh] left-0 bottom-0 bg-secondary">
+
+        {/* footer */}
+        <div className="bg-secondary w-screen">
           <Footer />
         </div>
       </div>

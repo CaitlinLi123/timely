@@ -38,6 +38,10 @@ export default function LoginPage() {
     getToken(user);
   }
 
+  const handleForgetPwd = () => {
+    navigate("/forget-password");
+  };
+
   return (
     <div className="flex">
       {/* photo */}
@@ -69,14 +73,25 @@ export default function LoginPage() {
               className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2"
               required
             />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2 "
-              required
-            />
+
+            <div>
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2 "
+                required
+              />
+              <p
+                className="text-sm mt-[2px] ml-2 cursor-pointer
+                hover:underline text-red-300
+              "
+                onClick={handleForgetPwd}
+              >
+                Forget your password?
+              </p>
+            </div>
 
             <button
               type="submit"

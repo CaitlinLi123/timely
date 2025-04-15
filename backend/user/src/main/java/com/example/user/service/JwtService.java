@@ -28,13 +28,15 @@ public class JwtService {
     private String recoverySecret;
     private int recoveryExpire = 10 * 60 * 1000;
 
-    public String generateToken(String username) {
+    public String generateToken(String username, int expirationSeconds) {
+        long now = System.currentTimeMillis();
+        long expirationMillis = expirationSeconds * 1000L;
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + Integer.parseInt(exprirationMs)))
+                .setExpiration(new Date(now + expirationMillis))
                 .signWith(getKey(secretKey), SignatureAlgorithm.HS256).compact();
     }
 

@@ -19,6 +19,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class UserService {
     }
 
     private void addTokenToResponse(String username, HttpServletResponse response, int maxAge, String cookieName) {
-        String token = jwtService.generateToken(username);
+        String token = jwtService.generateToken(username, maxAge / 1000);
         Cookie jwtCookie = new Cookie(cookieName, token);
         jwtCookie.setHttpOnly(true);// Prevent JavaScript access
         jwtCookie.setSecure(true);// Set to true in production (HTTPS only)
@@ -102,17 +103,26 @@ public class UserService {
     }
 
     public ResponseEntity<String> login(User user, HttpServletResponse response) {
+        User userInDb = dao.findByEmail(user.getEmail());
+        if (userInDb == null) {
+            return new ResponseEntity<>("This email has not registered.", HttpStatus.NOT_FOUND);
+        }
         if (user.getPassword() != null) {
-            // use normal authentication method to login
-            String username = dao.findByEmail(user.getEmail()).getUsername();
-            Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(username, user.getPassword()));
-            if (authentication.isAuthenticated()) {
-                addTokenToResponse(username, response, 259200, "jwt");
-                return ResponseEntity.ok("Login successful");
-            } else {
-                return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+            try {
+                // use normal authentication method to login
+                String username = dao.findByEmail(user.getEmail()).getUsername();
+                Authentication authentication = authenticationManager
+                        .authenticate(new UsernamePasswordAuthenticationToken(username, user.getPassword()));
+                if (authentication.isAuthenticated()) {
+                    addTokenToResponse(username, response, 259200, "jwt");
+                    return ResponseEntity.ok("Login successful");
+                } else {
+                    return new ResponseEntity<>("Incorrect email or password.", HttpStatus.UNAUTHORIZED);
+                }
+            } catch (AuthenticationException ex) {
+                return new ResponseEntity<>("Incorrect email or password.", HttpStatus.UNAUTHORIZED);
             }
+
         } else {
             // use oauth2
             System.out.println(user);

@@ -13,7 +13,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState("");
   async function getToken(user) {
     try {
       const response = await axios.post("http://localhost:5000/login", user, {
@@ -21,12 +21,18 @@ export default function LoginPage() {
       });
       if (response.status == 200) {
         alert("login successful");
+        setErrorMessage("");
         validate();
         navigate("/");
+      } else if (response.status == 404 || response.status == 401) {
+        setErrorMessage("*" + response.data);
       }
     } catch (error) {
       console.log(error);
-      alert(error);
+      // alert(error);
+      if (error.response) {
+        setErrorMessage("*" + error.response.data);
+      }
     }
   }
   function handleSubmit(event) {
@@ -43,7 +49,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex bg-last/10">
       {/* photo */}
       <div className="w-[45vw] h-screen">
         <img src={background} className="w-full h-screen" />
@@ -56,7 +62,7 @@ export default function LoginPage() {
           <p className="mb-6">
             Don't have an account?{" "}
             <span
-              className="text-red-500 hover:underline cursor-pointer"
+              className="text-secondary hover:underline cursor-pointer"
               onClick={() => {
                 navigate("/register");
               }}
@@ -70,7 +76,7 @@ export default function LoginPage() {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2"
+              className="w-full p-3 border border-secondary rounded-lg focus:ring-2 focus:ring-secondary"
               required
             />
 
@@ -80,12 +86,17 @@ export default function LoginPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2 "
+                className="w-full p-3 border border-secondary rounded-lg focus:ring-2 focus:ring-secondary "
                 required
               />
+              {errorMessage != "" && (
+                <p className="text-sm ml-2 mt-[2px] text-red-500">
+                  {errorMessage}
+                </p>
+              )}
               <p
                 className="text-sm mt-[2px] ml-2 cursor-pointer
-                hover:underline text-red-300
+                hover:underline text-secondary
               "
                 onClick={handleForgetPwd}
               >
@@ -96,7 +107,7 @@ export default function LoginPage() {
             <button
               type="submit"
               onClick={handleSubmit}
-              className="w-full font-bold text-white bg-red-400 p-3 rounded-lg hover:bg-red-600 transition cursor-pointer"
+              className="w-full font-bold text-white bg-secondary p-3 rounded-lg hover:bg-primary transition cursor-pointer"
             >
               Login
             </button>

@@ -54,12 +54,13 @@ export default function AppNav() {
           {!loading && (
             <div
               className="
-              flex
+              flex cursor-pointer
               bg-last rounded-full h-10 w-10 text-black flex font-bold text-2xl
         justify-center items-center text-center"
               onClick={() => {
                 setShowUserProfilePanel((show) => !show);
               }}
+              title="User Profile"
             >
               {avatarLetter[0]}
             </div>

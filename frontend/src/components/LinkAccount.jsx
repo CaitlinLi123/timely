@@ -9,7 +9,7 @@ export default function LinkAccount({ userFound }) {
 
   const handleLinkAccount = (pwd) => {
     userFound["password"] = pwd;
-    console.log(userFound);
+    // console.log(userFound);
     authApi
       .post("/login", userFound, { withCredentials: true })
       .then((res) => {
@@ -41,9 +41,7 @@ export default function LinkAccount({ userFound }) {
 
   return (
     <div className="h-[80%] w-full flex flex-col p-[20px] items-center">
-      <span className="underline text-xl">
-        This email already has an account.
-      </span>
+      <h1 className="underline text-2xl">This email already has an account.</h1>
       <div className="flex flex-col p-[20px] gap-3">
         <div>
           <span className="font-bold">Username:</span> {userFound.username}
@@ -60,20 +58,20 @@ export default function LinkAccount({ userFound }) {
           onClick={() => {
             setLink(true);
           }}
-          className="rounded-md bg-red-400 px-3 text-white font-bold text-lg h-[50px] w-[50%] cursor-pointer"
+          className="rounded-md bg-secondary hover:bg-primary transition px-3 text-white font-bold text-lg h-[50px] w-[50%] cursor-pointer"
         >
           Yes, this is my account.
         </button>
         <button
           title="click me to recover your account"
-          className="rounded-md bg-black px-3 text-white font-bold text-lg h-[50px] w-[50%]"
+          className="rounded-md bg-red-700 hover:bg-red-800 cursor-pointer px-3 text-white font-bold text-lg h-[50px] w-[50%]"
         >
           No, this is not my account!
         </button>
         {link && (
           <div className="flex flex-col gap-4 m-3 w-[50%]">
             <input
-              className="border border-gray-300 rounded-md px-2 py-1 mt-2 h-[50px]"
+              className="border border-secondary rounded-md px-2 py-1 mt-2 h-[50px]"
               type="text"
               name="link-account-password"
               value={pwd}
@@ -82,11 +80,18 @@ export default function LinkAccount({ userFound }) {
                 setPwd(event.target.value);
               }}
             />
-            <div className="underline text-sm mt-[-2%]">
+            <div
+              className="underline text-sm mt-[-2%] ml-1 text-secondary hover:font-bold cursor-pointer"
+              onClick={() => {
+                navigate("/forget-password");
+              }}
+            >
               Forget your password?
             </div>
             <button
-              className="rounded-md  border border-gray-400 hover:bg-gray-300 px-3 font-bold text-lg h-[30px] w-[50%] cursor-pointer"
+              className="rounded-md  
+              bg-secondary hover:bg-primary text-white
+              border border-gray-400  px-3 font-bold text-lg h-[30px] w-[50%] cursor-pointer"
               onClick={() => {
                 handleLinkAccount(pwd);
               }}

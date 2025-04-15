@@ -23,13 +23,17 @@ export default function AppNav() {
   return (
     <div
       className="flex w-full flex-col 
-    grid grid-cols-4 py-2 px-4
-    justify-center items-center"
+    grid grid-cols-4 
+    py-2 px-4
+    justify-center items-center bg-secondary"
     >
       {/* logo */}
       <div
         className="justify-self-start text-2xl col-span-3 
-      font-bold bg-primary rounded-xl py-1 px-2"
+      font-bold bg-primary rounded-xl py-1 px-2 text-white"
+        onClick={() => {
+          navigate("/");
+        }}
       >
         <span>
           <AccessAlarmIcon />
@@ -38,8 +42,8 @@ export default function AppNav() {
       </div>
 
       {/* views and avatar */}
-      <div className="grid grid-cols-2 place-content-center">
-        <button
+      <div className="">
+        {/* <button
           className="flex justify-center gap-2 items-center 
         cursor-pointer hover:text-primary text-rose-100"
         >
@@ -47,7 +51,7 @@ export default function AppNav() {
             <TableChartIcon />
           </span>
           Views
-        </button>
+        </button> */}
 
         {/* User Avatars: username's first letter */}
         <div className="relative justify-self-center flex items-center place-content-center gap-3">
@@ -58,7 +62,9 @@ export default function AppNav() {
               bg-last rounded-full h-10 w-10 text-black flex font-bold text-2xl
         justify-center items-center text-center"
               onClick={() => {
-                setShowUserProfilePanel((show) => !show);
+                if (user != null) {
+                  setShowUserProfilePanel((show) => !show);
+                }
               }}
               title="User Profile"
             >

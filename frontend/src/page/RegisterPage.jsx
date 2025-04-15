@@ -20,13 +20,15 @@ export default function RegisterPage() {
       const response = await authApi.post("/register", user);
       if (response.status == 200) {
         alert("Register successful");
+        setErrMsg("");
         navigate("/");
       } else {
-        alert(response.response.data);
+        setErrMsg(error.response.data);
       }
     } catch (error) {
       if (error.response) {
-        alert(error.response.data);
+        // alert(error.response.data);
+        setErrMsg(error.response.data);
       } else {
         console.log(error);
       }
@@ -49,7 +51,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex bg-light-pink/20">
+    <div className="flex bg-last/10">
       {/* photo */}
       <div className="w-[45vw] h-screen">
         <img src={background} className="w-full h-screen" />
@@ -62,7 +64,7 @@ export default function RegisterPage() {
           <p className="mb-6">
             Already have an account?{" "}
             <span
-              className="text-red-500 hover:underline cursor-pointer"
+              className="text-secondary hover:underline cursor-pointer"
               onClick={() => {
                 navigate("/login");
               }}
@@ -111,14 +113,14 @@ export default function RegisterPage() {
               required
             />
             {errMsg.length !== 0 && (
-              <p className="text-sm text-red-600 mt-[-5%]">*{errMsg}</p>
+              <p className="text-sm text-red-500">*{errMsg}</p>
             )}
             <button
               type="submit"
               onClick={() => {
                 handleSubmit(event);
               }}
-              className="w-full font-bold text-white bg-red-400 p-3 rounded-lg hover:bg-red-600 transition cursor-pointer"
+              className="w-full font-bold text-white bg-secondary p-3 rounded-lg hover:bg-primary transition cursor-pointer"
             >
               Register
             </button>

@@ -23,13 +23,14 @@ export default function ForgetPwdInput({
       <button
         type="submit"
         onClick={handleForgetPwd}
-        className="w-full font-bold text-white bg-red-400 p-3 rounded-lg hover:bg-red-600 transition cursor-pointer"
+        className="w-full font-bold text-white bg-secondary p-3 rounded-lg hover:primary transition cursor-pointer"
       >
         Send the link
       </button>
       <p
         className="cursor-pointer 
-              text-gray-400 hover:underline"
+        ml-2
+              text-secondary hover:underline hover:font-bold"
         onClick={() => {
           navigate("/login");
         }}

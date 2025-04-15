@@ -43,12 +43,13 @@ export default function HomePage() {
     >
       <div
         className="relative flex flex-col font-mono
-       bg-tertiary h-screen w-screen gap-4"
+        bg-linear-to-t from-quaternary to-primary
+       h-screen w-screen gap-4"
       >
         {/* navigation bar */}
         <div
           className="w-screen
-          bg-secondary text-white"
+           text-white shadow-xl"
         >
           <AppNav />
         </div>
@@ -63,7 +64,7 @@ export default function HomePage() {
             <div
               id="mainboard_table"
               className="w-full h-full rounded-lg overflow-y-auto divide-y divide-primary
-              bg-rose-100
+              bg-linear-to-b from-rose-100 to-rose-200
               "
             >
               {/* <BoardBar setShowAdd={setShowAdd} /> */}

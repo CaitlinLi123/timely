@@ -25,7 +25,8 @@ export default function AppNav() {
       className="flex w-full flex-col 
     grid grid-cols-4 
     py-2 px-4
-    justify-center items-center bg-secondary"
+    bg-linear-to-r from-primary to-secondary
+    justify-center items-center "
     >
       {/* logo */}
       <div

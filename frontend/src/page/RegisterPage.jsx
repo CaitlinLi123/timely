@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "../axios";
-import background from "../assets/register-background.jpg";
+import background from "../assets/background.jpg";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../axios";
 import { useAuth } from "../AuthContext";
+import AppNav from "../components/AppNav";
 import LoginWithGoogle from "../components/LoginWithGoogle";
 
 export default function RegisterPage() {
@@ -51,86 +52,105 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex bg-last/10">
-      {/* photo */}
-      <div className="w-[45vw] h-screen">
-        <img src={background} className="w-full h-screen" />
-      </div>
+    <div className="flex flex-col bg-last/10 h-screen w-screen items-center">
+      <AppNav />
+      <div
+        className="absolute w-screen h-screen"
+        style={{
+          background: `url(${background})`,
+          opacity: 0.9,
+          zIndex: -1,
+          backgroundSize: "cover",
+        }}
+      ></div>
+      <div className="flex w-[60%] max-w-[700px] h-full">
+        <div
+          className="flex flex-grow justify-center items-center h-[70%] 
+           rounded-lg
+          shadow-xl
+          self-center 
+        bg-white/60"
+        >
+          <div className="p-8 w-[80%]">
+            <h1 className="text-3xl font-bold mb-2">Join us</h1>
+            <p className="mb-6">
+              Already have an account?{" "}
+              <span
+                className="text-secondary hover:underline hover:font-bold cursor-pointer"
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                Login here.
+              </span>
+            </p>
+            <form className="space-y-4">
+              <div>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full p-3 
+                  bg-tertiary/50
+                  border border-secondary rounded-lg focus:ring-2"
+                  required
+                />
+                <p className="text-sm text-primary ml-2">
+                  *Only letters, numbers and underscore
+                </p>
+              </div>
 
-      {/* form */}
-      <div className="flex flex-grow justify-center items-center h-screen">
-        <div className="p-8 w-[80%]">
-          <h1 className="text-3xl font-bold mb-2">Join us</h1>
-          <p className="mb-6">
-            Already have an account?{" "}
-            <span
-              className="text-secondary hover:underline cursor-pointer"
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              Login here.
-            </span>
-          </p>
-          <form className="space-y-4">
-            <div>
               <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-3 
+                bg-tertiary/50
+                border border-primary rounded-lg focus:ring-2"
                 required
               />
-              <p className="text-sm text-gray-400 ml-2">
-                *Only letters, numbers and underscore
-              </p>
-            </div>
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-3 
+                bg-tertiary/50
+                border border-primary rounded-lg focus:ring-2 "
+                required
+              />
 
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2 "
-              required
-            />
-
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2"
-              required
-            />
-            {errMsg.length !== 0 && (
-              <p className="text-sm text-red-500">*{errMsg}</p>
-            )}
-            <button
-              type="submit"
-              onClick={() => {
-                handleSubmit(event);
-              }}
-              className="w-full font-bold text-white bg-secondary p-3 rounded-lg hover:bg-primary transition cursor-pointer"
-            >
-              Register
-            </button>
-            <div className="flex items-center justify-center text-sm">
-              <span>Or continue with</span>
-            </div>
-            <LoginWithGoogle />
-          </form>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full p-3 bg-tertiary/50 border border-primary rounded-lg focus:ring-2"
+                required
+              />
+              {errMsg.length !== 0 && (
+                <p className="text-sm text-red-500">*{errMsg}</p>
+              )}
+              <button
+                type="submit"
+                onClick={() => {
+                  handleSubmit(event);
+                }}
+                className="w-full font-bold text-white bg-secondary p-3 rounded-lg hover:bg-primary transition cursor-pointer"
+              >
+                Register
+              </button>
+              <div className="flex items-center justify-center text-sm">
+                <span>Or continue with</span>
+              </div>
+              <LoginWithGoogle />
+            </form>
+          </div>
         </div>
       </div>
+      {/* form */}
     </div>
   );
 }

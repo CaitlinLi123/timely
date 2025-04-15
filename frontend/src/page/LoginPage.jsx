@@ -61,7 +61,7 @@ export default function LoginPage() {
           backgroundSize: "cover",
         }}
       ></div>
-      <div className="flex md:w-[50%] h-full">
+      <div className="flex w-[60%] max-w-[700px] h-full">
         {/* form */}
         <div
           className="flex flex-grow justify-center items-center h-[60%] 

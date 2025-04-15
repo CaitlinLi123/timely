@@ -55,7 +55,7 @@ export default function AppNav() {
 
         {/* User Avatars: username's first letter */}
         <div className="relative justify-self-center flex items-center place-content-center gap-3">
-          {!loading && (
+          {!loading && user != null && (
             <div
               className="
               flex cursor-pointer

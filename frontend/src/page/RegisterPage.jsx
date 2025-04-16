@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "../axios";
+import React, { useEffect, useState } from "react";
 import background from "../assets/background.jpg";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../axios";
@@ -13,8 +12,9 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [usernameValid, setUsernameValid] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(false);
   const navigate = useNavigate();
-  const { setUser } = useAuth();
 
   async function getToken(user) {
     try {
@@ -38,22 +38,35 @@ export default function RegisterPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (password !== confirmPassword) {
-      setErrMsg("Your confirm password is different from password!");
-      return;
-    }
-    const user = {
-      username,
-      password,
-      email,
-    };
+    // if (password !== confirmPassword) {
+    //   setErrMsg("Your confirm password is different from password!");
+    //   return;
+    // }
+    if (usernameValid && passwordValid) {
+      const user = {
+        username,
+        password,
+        email,
+      };
 
-    getToken(user);
+      getToken(user);
+    }
   };
+
+  useEffect(() => {
+    if (password !== confirmPassword) {
+      setPasswordValid(false);
+      setErrMsg("Your confirm password is different from password!");
+    } else {
+      setPasswordValid(true);
+      setErrMsg("");
+    }
+  }, [password, confirmPassword]);
 
   return (
     <div className="flex flex-col bg-last/10 h-screen w-screen items-center">
       <AppNav />
+      {/* background image */}
       <div
         className="absolute w-screen h-screen"
         style={{
@@ -63,16 +76,17 @@ export default function RegisterPage() {
           backgroundSize: "cover",
         }}
       ></div>
+      {/* registration board */}
       <div className="flex w-[60%] max-w-[700px] h-full">
         <div
-          className="flex flex-grow justify-center items-center h-[70%] 
+          className="flex flex-grow justify-center items-center 
            rounded-lg
           shadow-xl
           self-center 
         bg-white/60"
         >
-          <div className="p-8 w-[80%]">
-            <h1 className="text-3xl font-bold mb-2">Join us</h1>
+          <div className="p-8 w-[80%] py-[50px]">
+            <h1 className="text-3xl font-bold mb-1">Join us</h1>
             <p className="mb-6">
               Already have an account?{" "}
               <span
@@ -90,13 +104,27 @@ export default function RegisterPage() {
                   type="text"
                   placeholder="Username"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={(e) => {
+                    let value = e.target.value;
+                    if (/^[a-zA-Z0-9_]*$/.test(value)) {
+                      setUsernameValid(true);
+                    } else {
+                      setUsernameValid(false);
+                    }
+                    setUsername(value);
+                  }}
                   className="w-full p-3 
                   bg-tertiary/50
                   border border-secondary rounded-lg focus:ring-2"
                   required
                 />
-                <p className="text-sm text-primary ml-2">
+                <p
+                  className={
+                    usernameValid
+                      ? "text-sm ml-2 text-primary"
+                      : "text-sm ml-2 text-red-600 font-bold"
+                  }
+                >
                   *Only letters, numbers and underscore
                 </p>
               </div>
@@ -122,17 +150,20 @@ export default function RegisterPage() {
                 required
               />
 
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full p-3 bg-tertiary/50 border border-primary rounded-lg focus:ring-2"
-                required
-              />
-              {errMsg.length !== 0 && (
-                <p className="text-sm text-red-500">*{errMsg}</p>
-              )}
+              <div>
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full p-3 bg-tertiary/50 border border-primary rounded-lg focus:ring-2"
+                  required
+                />
+                {errMsg.length !== 0 && (
+                  <p className="text-sm text-red-600 font-bold">*{errMsg}</p>
+                )}
+              </div>
+
               <button
                 type="submit"
                 onClick={() => {

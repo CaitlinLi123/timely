@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   const location = useLocation();
 
   const validate = () => {
-    console.log("start to validate...");
+    // console.log("start to validate...");
     axios
       .get("http://localhost:5000/validate", { withCredentials: true })
       .then((res) => {

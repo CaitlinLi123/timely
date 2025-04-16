@@ -19,36 +19,35 @@ export default function Todo({ todo }) {
   const [hover, setHover] = useState(false);
   const [editDes, setEditDes] = useState(false);
   const [editLabels, setEditLabels] = useState(false);
-  // const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [priorityColor, setPriorityColor] = useState("text-green-500");
 
   const handleDescriptionChange = () => {
     setEditDes(true);
   };
 
-  // const handleDeleteClick = ()=>{
-  //   setConfirmDelete(true);
-  // }
+  const handleDeleteClick = () => {
+    setConfirmDelete(true);
+  };
 
-  // const handleConfirmDeleteClick = ()=>{
-  //   axios.delete(`http://localhost:8000/task/${todo.id}`).then(
-  //     (res)=>{
-  //       if(res.status==200){
-  //         setTodos(todos=>todos.filter(td=>td.id!=todo.id));
-  //         alert("success in deleting.");
-  //       }else{
-  //         alert("Something went wrong....",res.status);
-  //       }
+  const handleConfirmDeleteClick = () => {
+    todoApi
+      .delete(`todo/${todo.id}`)
+      .then((res) => {
+        if (res.status == 200) {
+          setTodos((todos) => todos.filter((td) => td.id != todo.id));
+          alert("success in deleting.");
+        } else {
+          alert("Something went wrong....", res.status);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(setConfirmDelete(false));
+  };
 
-  //     }
-
-  //   ).catch(e=>{
-  //     console.log(e);
-  //   })
-  //   .finally(setConfirmDelete(false));
-  // }
-
-  // const {todos,setTodos} = useContext(todoContext);
+  const { todos, setTodos } = useContext(todoContext);
 
   const handleClickLabels = () => {
     setEditLabels(true);
@@ -118,10 +117,6 @@ export default function Todo({ todo }) {
       });
   };
 
-  // useEffect(()=>{
-  //   console.log(date);
-  // },[date])
-
   return (
     <editContext.Provider
       value={{
@@ -161,7 +156,7 @@ export default function Todo({ todo }) {
           <div className="flex items-center">
             {hover ? (
               <div className="text-white">
-                <span title="delete this task">
+                <span title="delete this task" onClick={handleDeleteClick}>
                   <DeleteIcon className="cursor-pointer" />
                 </span>
                 <span title="edit the description">
@@ -177,6 +172,40 @@ export default function Todo({ todo }) {
             {description}
           </div>
 
+          {confirmDelete && (
+            <div
+              className="fixed bg-black/10 h-screen w-screen z-100 top-0 left-0 flex
+            items-center justify-center"
+            >
+              <div
+                className="rounded-lg bg-white shadow-lg flex flex-col gap-4
+              p-4 m-4"
+              >
+                <p className="font-bold">
+                  Are you sure you want to delete this task?
+                </p>
+                <div className="text-primary underline">
+                  Description: {description}
+                </div>
+                <div className="flex place-content-between mx-[50px]">
+                  <button
+                    onClick={handleConfirmDeleteClick}
+                    className="text-white bg-red-700 hover:bg-primary transition px-3 py-2 cursor-pointer rounded-lg"
+                  >
+                    Yes
+                  </button>
+                  <button
+                    onClick={() => {
+                      setConfirmDelete(false);
+                    }}
+                    className="text-white bg-secondary hover:bg-primary transition px-3 py-2 cursor-pointer rounded-lg"
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="absolute top-full left-0 w-full z-50">
             {editDes ? (
               <EditDes
@@ -215,6 +244,7 @@ export default function Todo({ todo }) {
         <select
           name="status"
           id="edittodo_status"
+          className="overflow-x-hidden"
           value={status.toLowerCase()}
           onChange={(e) => {
             console.log(e.target.value.toUpperCase());
@@ -223,7 +253,7 @@ export default function Todo({ todo }) {
         >
           <option value="pending">Pending</option>
           <option value="in_progress">In Progress</option>
-          <option value="completed">🎉 Completed</option>
+          <option value="completed">🎉Completed</option>
         </select>
 
         <div className="col-span-2 relative left-2 mr-2">
@@ -234,7 +264,9 @@ export default function Todo({ todo }) {
             onClick={handleClickLabels}
           >
             <div
-              className="rounded-full bg-gray-100 h-5 w-5 cursor-pointer hover:bg-gray-200
+              className="rounded-full bg-tertiary
+              text-white
+              h-5 w-5 cursor-pointer hover:bg-primary
                 flex justify-center items-center"
               onClick={handleClickLabels}
             >

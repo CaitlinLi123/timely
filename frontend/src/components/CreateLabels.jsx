@@ -16,7 +16,7 @@ export default function CreateLabels() {
     LabelApi.post("/create", {
       color: chosenColor,
       name: newLabel,
-      username: user,
+      username: user.username,
     })
       .then((res) => {
         if (res.status == 201) {

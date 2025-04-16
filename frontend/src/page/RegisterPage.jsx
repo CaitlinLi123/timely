@@ -160,7 +160,9 @@ export default function RegisterPage() {
                   required
                 />
                 {errMsg.length !== 0 && (
-                  <p className="text-sm text-red-600 font-bold">*{errMsg}</p>
+                  <p className="text-sm text-red-600 font-bold ml-2">
+                    *{errMsg}
+                  </p>
                 )}
               </div>
 

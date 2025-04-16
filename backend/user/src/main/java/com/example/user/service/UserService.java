@@ -67,12 +67,12 @@ public class UserService {
     }
 
     private void addTokenToResponse(String username, HttpServletResponse response, int maxAge, String cookieName) {
-        String token = jwtService.generateToken(username, maxAge / 1000);
+        String token = jwtService.generateToken(username, maxAge); // this is milliseconds
         Cookie jwtCookie = new Cookie(cookieName, token);
         jwtCookie.setHttpOnly(true);// Prevent JavaScript access
         jwtCookie.setSecure(true);// Set to true in production (HTTPS only)
         jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(maxAge);
+        jwtCookie.setMaxAge(maxAge / 1000); // this is seconds
         // jwtCookie.setAttribute("SameSite", "None");
         response.addCookie(jwtCookie);
     }
@@ -114,7 +114,7 @@ public class UserService {
                 Authentication authentication = authenticationManager
                         .authenticate(new UsernamePasswordAuthenticationToken(username, user.getPassword()));
                 if (authentication.isAuthenticated()) {
-                    addTokenToResponse(username, response, 259200, "jwt");
+                    addTokenToResponse(username, response, 3 * 24 * 60 * 60 * 1000, "jwt");
                     return ResponseEntity.ok("Login successful");
                 } else {
                     return new ResponseEntity<>("Incorrect email or password.", HttpStatus.UNAUTHORIZED);

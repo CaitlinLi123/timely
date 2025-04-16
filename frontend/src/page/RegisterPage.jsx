@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import background from "../assets/background.jpg";
+
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../axios";
 import { useAuth } from "../AuthContext";
 import AppNav from "../components/AppNav";
 import LoginWithGoogle from "../components/LoginWithGoogle";
+import BackgroundImage from "../components/BackgroundImage";
+import Footer from "../components/Footer";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
@@ -67,15 +69,7 @@ export default function RegisterPage() {
     <div className="flex flex-col bg-last/10 h-screen w-screen items-center">
       <AppNav />
       {/* background image */}
-      <div
-        className="absolute w-screen h-screen"
-        style={{
-          background: `url(${background})`,
-          opacity: 0.9,
-          zIndex: -1,
-          backgroundSize: "cover",
-        }}
-      ></div>
+      <BackgroundImage />
       {/* registration board */}
       <div className="flex w-[60%] max-w-[700px] h-full">
         <div
@@ -183,6 +177,7 @@ export default function RegisterPage() {
           </div>
         </div>
       </div>
+      <Footer />
       {/* form */}
     </div>
   );

@@ -4,10 +4,14 @@ export default function Footer() {
   return (
     <div
       className="
-    left-0
-    bg-pink text-white text-center shadow-md"
+    left-0 w-screen
+    bg-gradient-to-r
+    flex place-content-between
+    from-primary to-secondary text-white text-center shadow-md"
     >
-      Copyright: Yu Li
+      <p>Copyright: Yu Li</p>
+      {/* <p>Last Edited:{new Date()}</p> */}
+      <p>Contact at: liyu3519@gmail.com</p>
     </div>
   );
 }

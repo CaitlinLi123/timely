@@ -4,7 +4,7 @@ import axios from "../axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Footer from "../components/Footer";
-import background from "../assets/background.jpg";
+import BackgroundImage from "../components/BackgroundImage";
 import LoginWithGoogle from "../components/LoginWithGoogle";
 import AppNav from "../components/AppNav";
 
@@ -52,19 +52,13 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col bg-last/10 h-screen items-center">
       <AppNav />
-      <div
-        className="absolute w-screen h-screen"
-        style={{
-          background: `url(${background})`,
-          opacity: 0.9,
-          zIndex: -1,
-          backgroundSize: "cover",
-        }}
-      ></div>
-      <div className="flex w-[60%] max-w-[700px] h-full">
+      {/* background image */}
+      <BackgroundImage />
+      {/* login board */}
+      <div className="flex flex-grow w-[60%] max-w-[700px] flex">
         {/* form */}
         <div
-          className="flex flex-grow justify-center items-center h-[60%] 
+          className="flex flex-grow justify-center items-center  
            rounded-lg
           shadow-xl
           self-center 
@@ -136,6 +130,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

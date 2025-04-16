@@ -1,49 +1,93 @@
-import React from 'react'
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import { todoApi } from '../axios';
-import EditPartBoard from './EditPartBoard';
+import React, { useEffect, useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import { todoApi } from "../axios";
+import EditPartBoard from "./EditPartBoard";
 
-export default function EditDes({description,setEditDes,todoid}) {
+export default function EditDes({
+  oldDesc,
+  setEditDes,
+  todoid,
+  setDescription,
+}) {
+  const [newDesc, setNewDesc] = useState(oldDesc);
 
-const editDesc = ()=>{
-    todoApi.patch(`/todo/${todoid}/description`, 
+  const editDesc = () => {
+    todoApi
+      .patch(
+        `/todo/${todoid}/description?description=${newDesc}`,
         // {"description":description},
-        JSON.stringify(description),
+        // JSON.stringify(newDesc),
         {
-        headers: {
-            "Content-Type": "application/json"
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-    })
-    .then(res=>{
-        if(res.status===200){
-            console.log(res.data);
-            alert("success");
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          setDescription(res.data.description);
+          alert("success");
         }
-    }).catch(e=>{
+      })
+      .catch((e) => {
         console.log(e);
-    })
-}
+      });
+  };
   return (
     <EditPartBoard>
-        <div className='absolute top-2 right-2'>
-             <IconButton>
-                <CloseIcon onClick={()=>{setEditDes(false)}}/>
-            </IconButton>
-        </div>
-       
-        <div className='mt-[2%]'>
-            Change Description 
-            </div>
-        <input type='text' value={description}
-        className='ring ring-red-300 border-transparent
-        w-[90%] h-[75%] text-sm py-0 px-2 rounded-lg
-        '></input>
-        <button className=' rounded-lg
-      bg-red-200 px-2 py-1 mb-1 
-      hover:outline-none hover:ring-2 hover:ring-red-300 hover:border-transparent
-      hover:bg-red-300 hover:text-white cursor-pointer'
-      onClick={editDesc}>Save</button>
+      <div className="absolute top-2 right-2 flex">
+        <button
+          className="rounded-full cursor-pointer 
+        h-6 w-6 hover:bg-tertiary hover:text-white"
+        >
+          <CloseIcon
+            onClick={() => {
+              setEditDes(false);
+            }}
+          />
+        </button>
+      </div>
+
+      <div
+        className="pb-[2%] w-full font-bold text-lg 
+      flex justify-center
+      border-b border-gray-300"
+      >
+        Edit Description
+      </div>
+      <input
+        type="text"
+        value={newDesc}
+        onChange={(e) => {
+          setNewDesc(e.target.value);
+        }}
+        placeholder="Description"
+        className="ring bg-tertiary text-white border-transparent
+        w-[90%] h-[75%] text-sm py-0 px-2 rounded-lg flex-grow
+        "
+      ></input>
+      <div className="flex gap-4">
+        <button
+          className=" rounded-lg w-15
+      bg-secondary text-white px-2 py-1 mb-1 
+      hover:outline-none hover:ring-2 hover:primary hover:border-transparent
+      hover:bg-primary transition cursor-pointer"
+          onClick={editDesc}
+        >
+          Save
+        </button>
+        <button
+          className=" rounded-lg w-15
+      bg-secondary text-white px-2 py-1 mb-1 
+      hover:outline-none hover:ring-2 hover:primary hover:border-transparent
+      hover:bg-primary transition cursor-pointer"
+          onClick={() => {
+            setNewDesc(oldDesc);
+          }}
+        >
+          Clear
+        </button>
+      </div>
     </EditPartBoard>
-  )
+  );
 }

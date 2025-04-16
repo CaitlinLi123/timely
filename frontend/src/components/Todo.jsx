@@ -145,7 +145,6 @@ export default function Todo({ todo }) {
           type="text"
           id="edittodo_description"
           name="description"
-          onChange={(e) => setDescription(e.target.value)}
           onMouseOver={() => {
             setHover(true);
           }}
@@ -206,13 +205,15 @@ export default function Todo({ todo }) {
               </div>
             </div>
           )}
+          {/* edit Description Board */}
           <div className="absolute top-full left-0 w-full z-50">
             {editDes ? (
               <EditDes
-                description={description}
+                oldDesc={todo.description}
                 setEditDes={setEditDes}
                 key={`editDesc_${todo.id}`}
                 todoid={todo.id}
+                setDescription={setDescription}
               />
             ) : (
               ""

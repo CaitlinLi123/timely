@@ -8,8 +8,6 @@ services:
     container_name: task-service
     env_file:
       - .env
-    # environment:
-    #   - SPRING_CONFIG_LOCATION=./backend/task/src/main/resources/application.properties
     depends_on:
       task-db:
         condition: service_healthy
@@ -25,8 +23,6 @@ services:
     container_name: user-service
     env_file:
       - .env
-    # environment:
-    #   - SPRING_CONFIG_LOCATION=./backend/user/src/main/resources/application.properties
     depends_on:
       user-db:
         condition: service_healthy
@@ -73,7 +69,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: react-frontend
+    container_name: frontend
     depends_on:
       task-service:
         condition: service_started

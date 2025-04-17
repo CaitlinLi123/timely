@@ -115,7 +115,7 @@
 	</dependencyManagement>
 
 	<build>
-		<finalName>user-service</finalName>
+		<finalName>user</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

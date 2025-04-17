@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { authApi } from "../axios";
 
 import ForgetPwdInput from "../components/ForgetPwdInput";

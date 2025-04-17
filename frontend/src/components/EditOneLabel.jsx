@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { todoContext } from "../page/HomePage";
 import { useContext } from "react";
-import axios, { LabelApi } from "../axios";
+import { LabelApi } from "../axios";
 
 export default function EditOneLabel({
   labelTobeEdit,

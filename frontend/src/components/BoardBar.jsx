@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import filterIcon from "../assets/filter.svg";
 import SortIcon from "@mui/icons-material/Sort";
 import FilterPanel from "./FilterPanel";
 import { todoContext } from "../page/HomePage";
@@ -76,7 +75,6 @@ export default function BoardBar({ setShowAdd }) {
           title="filter"
         >
           <span
-            src={filterIcon}
             className="bg-tertiary h-6 w-6 flex items-center justify-center rounded-sm p-[2px] text-white
             hover:bg-primary transition"
             onClick={() => {

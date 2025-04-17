@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import TableChartIcon from "@mui/icons-material/TableChart";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
-import tableIcon from "../assets/table.svg";
 import ProfilePanel from "./ProfilePanel";
 
 export default function AppNav() {

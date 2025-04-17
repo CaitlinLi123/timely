@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import closeIcon from "../assets/close.svg";
 import { todoContext } from "../page/HomePage";
 import { useAuth } from "../AuthContext";
 import { todoApi } from "../axios";

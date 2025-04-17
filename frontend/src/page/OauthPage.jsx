@@ -3,6 +3,10 @@ import { authApi } from "../axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import LinkAccount from "../components/LinkAccount";
+import AppNav from "../components/AppNav";
+import Footer from "../components/Footer";
+import AuthBoard from "../components/AuthBoard";
+import BackgroundImage from "../components/BackgroundImage";
 
 export default function OauthPage() {
   const navigate = useNavigate();
@@ -38,9 +42,19 @@ export default function OauthPage() {
   }, []);
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
+    <div className="w-screen h-screen flex flex-col justify-center items-center">
       {/* {message} */}
-      {linkAccount && <LinkAccount userFound={userFound} />}
+      <AppNav />
+      <BackgroundImage />
+      <AuthBoard>
+        {linkAccount ? (
+          <LinkAccount userFound={userFound} />
+        ) : (
+          <div>Something goes wrong...</div>
+        )}
+      </AuthBoard>
+
+      <Footer />
     </div>
   );
 }

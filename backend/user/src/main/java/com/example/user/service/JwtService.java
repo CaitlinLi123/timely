@@ -21,20 +21,22 @@ public class JwtService {
 
     @Value("${jwt.secret}")
     private String secretKey;
-    @Value("${jwt.expiration}")
-    private String exprirationMs;
+    // @Value("${jwt.expiration}")
+    // private int exprirationMs = 3 * 24 * 60 * 60 * 100;
 
     @Value("${recoverySecret}")
     private String recoverySecret;
     private int recoveryExpire = 10 * 60 * 1000;
 
-    public String generateToken(String username) {
+    public String generateToken(String username, int expirationSeconds) {
+        long now = System.currentTimeMillis();
+        long expirationMillis = (long) expirationSeconds;
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + Integer.parseInt(exprirationMs)))
+                .setExpiration(new Date(now + expirationMillis))
                 .signWith(getKey(secretKey), SignatureAlgorithm.HS256).compact();
     }
 
@@ -86,7 +88,9 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token, String key) {
-        return extractClaim(token, Claims::getExpiration, key);
+        Date expireDateExtracted = extractClaim(token, Claims::getExpiration, key);
+        System.out.println(expireDateExtracted);
+        return expireDateExtracted;
     }
 
 }

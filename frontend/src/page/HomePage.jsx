@@ -42,29 +42,48 @@ export default function HomePage() {
       }}
     >
       <div
-        className="relative border flex 
-      px-5 bg-cream h-screen w-screen"
+        className="relative flex flex-col font-mono
+        bg-linear-to-t from-quaternary to-primary
+       h-screen w-screen gap-4"
       >
+        {/* navigation bar */}
         <div
-          className="fixed h-[6vh] top-0 left-0 py-3 px-4 z-10 w-screen
-          bg-coffee-100 text-white border-b border-white"
+          className="w-screen
+           text-white shadow-xl"
         >
           <AppNav />
         </div>
 
-        <div className=" flex flex-col items-center justify-center flex-grow pt-20 pb-16">
-          <div className="w-[85%] bg-white rounded-lg shadow-lg p-4">
+        {/* main board */}
+        <div
+          className=" flex flex-col 
+        items-center justify-center flex-grow
+        w-screen "
+        >
+          <div className="w-[95%] h-full shadow-lg rounded-lg">
             <div
               id="mainboard_table"
-              className="w-full h-[75vh] overflow-y-auto divide-y divide-gray-300"
+              className="w-full h-full rounded-lg overflow-y-auto divide-y divide-primary
+              bg-linear-to-b from-rose-100 to-rose-200
+              "
             >
-              <BoardBar setShowAdd={setShowAdd} />
-              {showAdd ? <AddTodo setShowAdd={setShowAdd} /> : ""}
-              {!loading && user ? <MainBoard user={user} /> : ""}
+              {/* <BoardBar setShowAdd={setShowAdd} /> */}
+              {/* {showAdd ? <AddTodo setShowAdd={setShowAdd} /> : ""} */}
+              {!loading && user ? (
+                <MainBoard
+                  user={user}
+                  setShowAdd={setShowAdd}
+                  showAdd={showAdd}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>
-        <div className="fixed h-[3vh] left-0 bottom-0">
+
+        {/* footer */}
+        <div className="bg-secondary w-screen">
           <Footer />
         </div>
       </div>

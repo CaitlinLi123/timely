@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { authApi } from "../axios";
+import AppNav from "../components/AppNav";
+import Footer from "../components/Footer";
+import BackgroundImage from "../components/BackgroundImage";
+import AuthBoard from "../components/AuthBoard";
 
 export default function ResetPwdPage() {
   const [searchParams] = useSearchParams();
@@ -50,36 +54,53 @@ export default function ResetPwdPage() {
   };
 
   return (
-    <div>
-      {loading && <p>Validating....</p>}
-      {!loading &&
-        (isValid ? (
-          <div className="space-y-4 flex flex-col flex-grow justify-center items-center h-screen">
-            <h1 className="text-3xl font-bold mb-2">Reset Your Password</h1>
-            <p>Email: {email}</p>
-            <input
-              type="text"
-              onChange={(e) => {
-                setNewPassword(e.target.value);
-              }}
-              value={newPassword}
-              placeholder="your new password"
-              className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2"
-              required
-            />
-            <button
-              type="submit"
-              onClick={() => {
-                handleSubmit();
-              }}
-              className="w-full font-bold text-white bg-red-400 p-3 rounded-lg hover:bg-red-600 transition cursor-pointer"
-            >
-              Submit
-            </button>
-          </div>
-        ) : (
-          <p>The link is expired. Please try again.</p>
-        ))}
+    <div className="flex flex-col h-screen items-center">
+      <AppNav />
+      <BackgroundImage />
+      <AuthBoard>
+        {loading && <p className="">Validating....</p>}
+        {!loading &&
+          (isValid ? (
+            <div className="space-y-4 flex flex-col flex-grow justify-center items-center">
+              <h1 className="text-3xl font-bold mb-2">Reset Your Password</h1>
+              <p>Email: {email}</p>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setNewPassword(e.target.value);
+                }}
+                value={newPassword}
+                placeholder="your new password"
+                className="w-full p-3 border border-gray-500 rounded-lg focus:ring-2"
+                required
+              />
+              <button
+                type="submit"
+                onClick={() => {
+                  handleSubmit();
+                }}
+                className="w-full font-bold text-white bg-secondary p-3 rounded-lg hover:bg-primary transition cursor-pointer"
+              >
+                Submit
+              </button>
+            </div>
+          ) : (
+            <div className="font-bold flex flex-col text-center gap-4 items-center">
+              The link is expired. Please try sending a recovery link to your
+              email again.
+              <button
+                onClick={() => {
+                  navigate("/forget-password");
+                }}
+                className="rounded-lg bg-secondary p-2 text-white hover:bg-primary transition cursor-pointer"
+              >
+                Back to Forget Password
+              </button>
+            </div>
+          ))}
+      </AuthBoard>
+
+      <Footer />
     </div>
   );
 }

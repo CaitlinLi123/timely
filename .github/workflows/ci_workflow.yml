@@ -84,4 +84,7 @@ jobs:
 
       - name: Clean up
         if: always()
+        env:
+          PG_USERNAME: ${{ secrets.PG_USERNAME }}
+          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
         run: docker compose down --volumes

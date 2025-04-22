@@ -1,0 +1,95 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    env:
+      PG_USERNAME: ${{ secrets.PG_USERNAME }}
+      PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+
+    services:
+      postgres-task:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: taskdb
+          POSTGRES_USER: ${{ secrets.PG_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.PG_PASSWORD }}
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      postgres-user:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: userdb
+          POSTGRES_USER: ${{ secrets.PG_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.PG_PASSWORD }}
+        ports:
+          - 5434:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+
+      - name: Build Spring Boot task-service
+        working-directory: backend/task
+        run: mvn clean package -DskipTests
+
+      - name: Build Spring Boot user-service
+        working-directory: backend/user
+        run: mvn clean package -DskipTests
+
+      - name: Build React frontend
+        working-directory: frontend
+        run: |
+          npm install
+          npm run build
+
+      - name: Create .env file
+        run: |
+          echo "PG_USERNAME=${{ secrets.PG_USERNAME }}" > .env
+          echo "PG_PASSWORD=${{ secrets.PG_PASSWORD }}" >> .env
+
+      - name: Build Docker images
+        run: docker compose -f docker-compose.yaml build
+
+      - name: Clean up
+        if: always()
+        # env:
+        #   PG_USERNAME: ${{ secrets.PG_USERNAME }}
+        #   PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+        run: docker compose down --volumes

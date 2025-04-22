@@ -1,0 +1,83 @@
+services:
+  task-service:
+    build: 
+      context: ./backend/task
+      dockerfile: Dockerfile
+    container_name: task-service
+    env_file:
+      - .env
+    depends_on:
+      task-db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    networks:
+      - todo-network
+
+  user-service:
+    build: 
+      context: ./backend/user
+      dockerfile: Dockerfile
+    container_name: user-service
+    env_file:
+      - .env
+    depends_on:
+      user-db:
+        condition: service_healthy
+    ports:
+      - "5000:5000"
+    networks:
+      - todo-network
+
+  task-db:
+    image: postgres:latest
+    container_name: postgres-taskdb
+    environment:
+      POSTGRES_DB: taskdb
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d taskdb"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "5433:5432"  # Avoid conflict with user-db
+    networks:
+      - todo-network
+
+  user-db:
+    image: postgres:latest
+    container_name: postgres-userdb
+    environment:
+      POSTGRES_DB: userdb
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d userdb"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "5434:5432"  # Avoid conflict with task-db
+    networks:
+      - todo-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    depends_on:
+      task-service:
+        condition: service_started
+      user-service:
+        condition: service_started
+    ports:
+      - "5173:5173"
+    networks:
+      - todo-network
+
+networks:
+  todo-network:
+    driver: bridge

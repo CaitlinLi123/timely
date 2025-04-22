@@ -79,12 +79,17 @@ jobs:
           npm install
           npm run build
 
+      - name: Create .env file
+        run: |
+          echo "PG_USERNAME=${{ secrets.PG_USERNAME }}" > .env
+          echo "PG_PASSWORD=${{ secrets.PG_PASSWORD }}" >> .env
+
       - name: Build Docker images
         run: docker compose -f docker-compose.yaml build
 
       - name: Clean up
         if: always()
-        env:
-          PG_USERNAME: ${{ secrets.PG_USERNAME }}
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+        # env:
+        #   PG_USERNAME: ${{ secrets.PG_USERNAME }}
+        #   PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
         run: docker compose down --volumes

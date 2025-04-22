@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import MainBoard from "../components/MainBoard";
 import AppNav from "../components/AppNav";
-import BoardBar from "../components/BoardBar";
 import Footer from "../components/Footer";
-import AddTodo from "../components/AddTodo";
 import { createContext } from "react";
 import { useAuth } from "../AuthContext";
-import { authApi } from "../axios";
 
 export const todoContext = createContext();
 

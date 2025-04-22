@@ -1,5 +1,4 @@
 import React from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useContext, useState } from "react";
 import { todoContext } from "../page/HomePage";

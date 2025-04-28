@@ -61,7 +61,7 @@ public class TaskController {
     }
 
     // create a todo
-    @PostMapping
+    @PostMapping({ "", "/" })
     public ResponseEntity<Todo> createATodo(@RequestBody TodoRequestDTO task) {
         return taskService.createToDos(task);
     }

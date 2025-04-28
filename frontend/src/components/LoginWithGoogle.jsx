@@ -1,10 +1,12 @@
 import React from "react";
 import google_icon from "../assets/google-icon.svg";
+import { authApi } from "../axios";
 
 export default function LoginWithGoogle() {
   const handleGoogleLogin = () => {
     // Redirect to Spring Boot OAuth2 login endpoint
-    window.location.href = "http://localhost:5000/oauth2/authorization/google";
+    window.location.href =
+      "http://localhost/api/auth/oauth2/authorization/google";
   };
   return (
     <button

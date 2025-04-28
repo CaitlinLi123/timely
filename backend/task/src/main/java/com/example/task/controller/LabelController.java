@@ -30,7 +30,7 @@ public class LabelController {
     }
 
     // get all labels by username
-    @GetMapping("/{username}")
+    @GetMapping("/user/{username}")
     public ResponseEntity<List<Label>> getLabelsByUserName(@PathVariable String username) {
         return labelService.getLabelsByUsername(username);
     }

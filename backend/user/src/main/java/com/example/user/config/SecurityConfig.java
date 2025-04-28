@@ -31,26 +31,25 @@ public class SecurityConfig {
         this.jwtFilter = jwtFilter;
     }
 
-    // @Bean
-    // public CorsConfigurationSource corsConfigurationSource() {
-    // CorsConfiguration config = new CorsConfiguration();
-    // config.setAllowedOrigins(List.of("http://localhost:5173")); // React frontend
-    // config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    // config.setAllowedHeaders(List.of("Authorization", "Content-Type",
-    // "x-auth-token"));
-    // config.setExposedHeaders(List.of("x-auth-token"));
-    // config.setAllowCredentials(true);
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost", "http://localhost:80", "http://localhost:3000"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type",
+                "x-auth-token"));
+        config.setExposedHeaders(List.of("x-auth-token"));
+        config.setAllowCredentials(true);
 
-    // UrlBasedCorsConfigurationSource source = new
-    // UrlBasedCorsConfigurationSource();
-    // source.registerCorsConfiguration("/**", config);
-    // return source;
-    // }
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable()) // Disable CSRF
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/register", "/login", "/logout", "/validate", "/oauth2/authorization/**",

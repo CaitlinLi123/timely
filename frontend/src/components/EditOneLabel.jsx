@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { todoContext } from "../page/HomePage";
 import { useContext } from "react";
-import { LabelApi } from "../axios";
+import { labelApi } from "../axios";
 
 export default function EditOneLabel({
   labelTobeEdit,
@@ -20,11 +20,12 @@ export default function EditOneLabel({
   const [newLabel, setNewLabel] = useState(labelTobeEdit.name);
 
   const handleClick = () => {
-    LabelApi.put(`/${todoid}/update`, {
-      color: chosenColor,
-      name: newLabel,
-      username: user.username,
-    })
+    labelApi
+      .put(`/${todoid}`, {
+        color: chosenColor,
+        name: newLabel,
+        username: user.username,
+      })
       .then((res) => {
         if (res.status == 200) {
           const l = res.data;
@@ -46,7 +47,8 @@ export default function EditOneLabel({
   };
 
   const handleDelete = () => {
-    LabelApi.delete(`/${labelTobeEdit.id}`, labelTobeEdit)
+    labelApi
+      .delete(`/${labelTobeEdit.id}`, labelTobeEdit)
       .then((res) => {
         if (res.status == 200) {
           setUsedLabels((prev) =>

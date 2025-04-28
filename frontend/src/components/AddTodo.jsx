@@ -28,7 +28,7 @@ export default function AddTodo({ setShowAdd }) {
 
   const addNewTodo = (newTodo) => {
     todoApi
-      .post("/todos", newTodo, {
+      .post("/", newTodo, {
         headers: {
           "Content-Type": "application/json",
         },

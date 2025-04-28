@@ -28,18 +28,13 @@ export default function BoardBar({ setShowAdd }) {
     setTodos(sorted); // Ensure you update the state
   };
 
-  // const sortById = ()=>{
-  //    const sorted = [...todos].sort((t1, t2) => t1.id - t2.id);
-  //   setTodos(sorted); // Ensure you update the state
-  // }
-
   const { showFilter, setShowFilter, todos, setTodos } =
     useContext(todoContext);
   const { user } = useAuth();
 
   const getAllTodos = () => {
     todoApi
-      .get(`/todos/all/${user.username}`)
+      .get(`/user/${user.username}`)
       .then((res) => {
         if (res.data) {
           setTodos(res.data);

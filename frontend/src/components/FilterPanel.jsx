@@ -22,7 +22,7 @@ export default function FilterPanel({ setHaveFiltered }) {
     };
     console.log(filter);
     todoApi
-      .post("/todos/filter", filter)
+      .post("/filter", filter)
       .then((res) => {
         if (res.status == 200) {
           setTodos(res.data);

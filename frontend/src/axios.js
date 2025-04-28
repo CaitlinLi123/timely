@@ -1,17 +1,17 @@
 import axios from "axios";
 
 export const authApi = axios.create({
-    baseURL: "http://localhost:5000/",
+    baseURL: "/api/auth",
     withCredentials: true
 });
 
 export const todoApi = axios.create({
-    baseURL: "http://localhost:8000/api",
+    baseURL: "/api/task",
     withCredentials: true
 });
 
 export const LabelApi = axios.create({
-    baseURL: "http://localhost:8000/api/label",
+    baseURL: "/api/label",
     withCredentials: true
 })
 

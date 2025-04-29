@@ -36,7 +36,7 @@ public class LabelController {
     }
 
     // create a label
-    @PostMapping
+    @PostMapping({ "", "/" })
     public ResponseEntity<Label> createALabel(@RequestBody Label label) {
         return labelService.createALabel(label);
     }

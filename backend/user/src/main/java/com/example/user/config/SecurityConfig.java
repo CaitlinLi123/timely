@@ -60,7 +60,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> {
                     oauth2.successHandler((request, response, authentication) -> {
                         // Redirect to frontend with token
-                        response.sendRedirect("http://localhost:5173/oauth");
+                        response.sendRedirect("http://localhost/oauth");
                     });
                 })
                 .httpBasic(basic -> basic.disable())

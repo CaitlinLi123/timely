@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import Todo from "./Todo";
 import { todoContext } from "../page/HomePage";
-import { todoApi, LabelApi } from "../axios";
+import { todoApi, labelApi } from "../axios";
 import BoardBar from "./BoardBar";
 import AddTodo from "./AddTodo";
 
@@ -16,7 +16,7 @@ export default function MainBoard({ user, setShowAdd, showAdd }) {
   useEffect(() => {
     if (!user) return;
     todoApi
-      .get(`/todos/all/${user.username}`)
+      .get(`/user/${user.username}`)
       .then((res) => {
         if (res.data) {
           setTodos(res.data);
@@ -25,7 +25,8 @@ export default function MainBoard({ user, setShowAdd, showAdd }) {
       .catch((e) => {
         console.log(e);
       });
-    LabelApi.get(`/all/${user.username}`)
+    labelApi
+      .get(`/user/${user.username}`)
       .then((res) => {
         setLabels(res.data);
       })

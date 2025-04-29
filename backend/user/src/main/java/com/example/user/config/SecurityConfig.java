@@ -34,9 +34,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173")); // React frontend
+        config.setAllowedOrigins(List.of("http://localhost", "http://localhost:80", "http://localhost:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "x-auth-token"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type",
+                "x-auth-token"));
         config.setExposedHeaders(List.of("x-auth-token"));
         config.setAllowCredentials(true);
 
@@ -56,16 +57,13 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated())
-                // .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("http://localhost:5173/",
-                // true))
                 .oauth2Login(oauth2 -> {
                     oauth2.successHandler((request, response, authentication) -> {
                         // Redirect to frontend with token
-                        response.sendRedirect("http://localhost:5173/oauth");
+                        response.sendRedirect("http://localhost/oauth");
                     });
                 })
                 .httpBasic(basic -> basic.disable())
-                // .formLogin(form -> form.disable())
                 .logout(logout -> logout.disable())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // Allow sessions for OAuth2

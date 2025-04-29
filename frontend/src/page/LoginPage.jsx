@@ -1,5 +1,5 @@
-import React, { use, useState } from "react";
-import axios from "../axios";
+import React, { useState } from "react";
+import { authApi } from "../axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import Footer from "../components/Footer";
@@ -9,14 +9,14 @@ import AppNav from "../components/AppNav";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { validate, setUser } = useAuth();
+  const { validate } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+  // const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   async function getToken(user) {
     try {
-      const response = await axios.post("http://localhost:5000/login", user, {
+      const response = await authApi.post("/login", user, {
         withCredentials: true,
       });
       if (response.status == 200) {
@@ -25,12 +25,12 @@ export default function LoginPage() {
         validate();
         navigate("/");
       } else if (response.status == 404 || response.status == 401) {
+        // console.log(response);
         setErrorMessage("*" + response.data);
       }
     } catch (error) {
-      console.log(error);
-      // alert(error);
       if (error.response) {
+        // console.log(error);
         setErrorMessage("*" + error.response.data);
       }
     }

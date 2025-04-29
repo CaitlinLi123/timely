@@ -4,7 +4,7 @@ import { todoContext } from "../page/HomePage";
 import { useAuth } from "../AuthContext";
 import { labelContext } from "./EditLabels";
 import { useContext } from "react";
-import { LabelApi } from "../axios";
+import { labelApi } from "../axios";
 export default function CreateLabels() {
   const { colors, labels, setLabels } = useContext(todoContext);
   const [chosenColor, setChosenColor] = useState("#FCA5A5");
@@ -13,11 +13,12 @@ export default function CreateLabels() {
   const { setSelect } = useContext(labelContext);
 
   const handleClick = () => {
-    LabelApi.post("/create", {
-      color: chosenColor,
-      name: newLabel,
-      username: user.username,
-    })
+    labelApi
+      .post("/", {
+        color: chosenColor,
+        name: newLabel,
+        username: user.username,
+      })
       .then((res) => {
         if (res.status == 201) {
           const l = res.data;

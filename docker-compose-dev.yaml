@@ -1,31 +1,27 @@
 services:
-  task-service:
+  task:
     build: 
       context: ./backend/task
       dockerfile: Dockerfile
-    container_name: task-service
+    container_name: task
     env_file:
       - .env
     depends_on:
       task-db:
         condition: service_healthy
-    ports:
-      - "8000:8000"
     networks:
       - todo-network
 
-  user-service:
+  auth:
     build: 
       context: ./backend/user
       dockerfile: Dockerfile
-    container_name: user-service
+    container_name: auth
     env_file:
       - .env
     depends_on:
-      user-db:
+      auth-db:
         condition: service_healthy
-    ports:
-      - "5000:5000"
     networks:
       - todo-network
 
@@ -46,7 +42,7 @@ services:
     networks:
       - todo-network
 
-  user-db:
+  auth-db:
     image: postgres:latest
     container_name: postgres-userdb
     environment:
@@ -69,12 +65,25 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     depends_on:
-      task-service:
+      task:
         condition: service_started
-      user-service:
+      auth:
         condition: service_started
     ports:
-      - "5173:5173"
+      - "3000:3000"
+    networks:
+      - todo-network
+  nginx:
+    # restart: always
+    build: 
+      dockerfile: Dockerfile
+      context: ./nginx
+    depends_on:
+      - task
+      - auth
+      - frontend
+    ports:
+      - '80:80'
     networks:
       - todo-network
 

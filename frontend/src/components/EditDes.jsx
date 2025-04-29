@@ -14,7 +14,7 @@ export default function EditDes({
   const editDesc = () => {
     todoApi
       .patch(
-        `/todo/${todoid}/description?description=${newDesc}`,
+        `/${todoid}/description?description=${newDesc}`,
         // {"description":description},
         // JSON.stringify(newDesc),
         {

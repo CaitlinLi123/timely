@@ -32,7 +32,7 @@ export default function Todo({ todo }) {
 
   const handleConfirmDeleteClick = () => {
     todoApi
-      .delete(`todo/${todo.id}`)
+      .delete(`/${todo.id}`)
       .then((res) => {
         if (res.status == 200) {
           setTodos((todos) => todos.filter((td) => td.id != todo.id));
@@ -56,7 +56,7 @@ export default function Todo({ todo }) {
   const handleDateChange = (newDate) => {
     todoApi
       .patch(
-        `/todo/${todo.id}/date`,
+        `/${todo.id}/date`,
         JSON.stringify(new Date(newDate).toISOString()),
         {
           headers: {
@@ -79,7 +79,7 @@ export default function Todo({ todo }) {
 
   const handlePriorityChange = (newPriority) => {
     todoApi
-      .patch(`/todo/${todo.id}/priority`, JSON.stringify(newPriority), {
+      .patch(`/${todo.id}/priority`, JSON.stringify(newPriority), {
         headers: {
           "Content-Type": "application/json",
         },
@@ -99,7 +99,7 @@ export default function Todo({ todo }) {
 
   const handleStatusChange = (newStatus) => {
     todoApi
-      .patch(`/todo/${todo.id}/status`, JSON.stringify(newStatus), {
+      .patch(`/${todo.id}/status`, JSON.stringify(newStatus), {
         headers: {
           "Content-Type": "application/json",
         },
@@ -116,6 +116,10 @@ export default function Todo({ todo }) {
         console.log(e);
       });
   };
+
+  useEffect(() => {
+    console.log(usedLabels);
+  }, [usedLabels]);
 
   return (
     <editContext.Provider

@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../AuthContext";
-import axios from "axios";
+import { authApi } from "../axios";
 import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -11,15 +11,16 @@ export default function ProfilePanel({ setShowUserProfilePanel }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate("/login");
-    axios
-      .get("http://localhost:5000/logout", { withCredentials: true })
+    authApi
+      .get("/logout", { withCredentials: true })
       .then((res) => {
         alert(res.data);
         setUser(null);
+        navigate("/login");
       })
       .catch((e) => {
         console.log(e);
+        alert("Something goes wrong...");
       });
   };
 

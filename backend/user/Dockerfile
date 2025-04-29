@@ -21,8 +21,6 @@ WORKDIR /app
 # Copy the built jar from the builder stage
 COPY --from=builder /app/target/*.jar user.jar
 
-EXPOSE 5000
-
 # Set the command to run the app
 ENTRYPOINT ["java", "-jar", "user.jar"]
 

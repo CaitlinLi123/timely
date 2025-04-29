@@ -3,7 +3,7 @@ package com.example.task.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.task.model.Label;
-import com.example.task.model.Todo;
+// import com.example.task.model.Todo;
 import com.example.task.service.LabelService;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@RequestMapping("/api/label")
+@RequestMapping("/api/labels")
 public class LabelController {
 
     private final LabelService labelService;
@@ -29,21 +29,25 @@ public class LabelController {
         this.labelService = labelService;
     }
 
-    @GetMapping("/all/{username}")
+    // get all labels by username
+    @GetMapping("/user/{username}")
     public ResponseEntity<List<Label>> getLabelsByUserName(@PathVariable String username) {
         return labelService.getLabelsByUsername(username);
     }
 
-    @PostMapping("/create")
+    // create a label
+    @PostMapping({ "", "/" })
     public ResponseEntity<Label> createALabel(@RequestBody Label label) {
         return labelService.createALabel(label);
     }
 
-    @PutMapping("/{id}/update")
+    // update a label by id
+    @PutMapping("/{id}")
     public ResponseEntity<Label> updateALabel(@PathVariable int id, @RequestBody Label label) {
         return labelService.updateALabel(id, label);
     }
 
+    // delete a label by id
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteALabel(@PathVariable int id) {
         return labelService.deleteLabelById(id);

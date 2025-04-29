@@ -10,7 +10,7 @@ import { useAuth } from "../AuthContext";
 export default function EditOneLabel({ todoid }) {
   const { user } = useAuth();
   const { setUsedLabels } = useContext(editContext);
-  const { colors, setLables } = useContext(todoContext);
+  const { colors, setLabels } = useContext(todoContext);
   const { setSelect, labelTobeEdit } = useContext(labelContext);
   const [chosenColor, setChosenColor] = useState(labelTobeEdit.color);
   const [newLabel, setNewLabel] = useState(labelTobeEdit.name);
@@ -25,10 +25,11 @@ export default function EditOneLabel({ todoid }) {
       .then((res) => {
         if (res.status == 200) {
           const l = res.data;
+          console.log(l);
           setUsedLabels((prev) => {
             prev.map((label) => (label.id === l.id ? l : label));
           });
-          setLables((prev) => {
+          setLabels((prev) => {
             prev.map((label) => (label.id === l.id ? l : label));
           });
         } else {

@@ -105,7 +105,6 @@ export default function SelectLabels({ todoid }) {
                   style={{ backgroundColor: label.color }}
                   className="px-2 rounded-lg"
                 >
-                  {" "}
                   {label.name}
                 </label>
                 <span

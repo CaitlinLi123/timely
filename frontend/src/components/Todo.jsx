@@ -117,6 +117,10 @@ export default function Todo({ todo }) {
       });
   };
 
+  useEffect(() => {
+    console.log(usedLabels);
+  }, [usedLabels]);
+
   return (
     <editContext.Provider
       value={{

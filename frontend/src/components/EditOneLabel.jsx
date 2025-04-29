@@ -9,7 +9,7 @@ import { useAuth } from "../AuthContext";
 
 export default function EditOneLabel({ todoid }) {
   const { user } = useAuth();
-  const { setUsedLabels } = useContext(editContext);
+  const { setUsedLabels, usedLabels } = useContext(editContext);
   const { colors, setLabels } = useContext(todoContext);
   const { setSelect, labelTobeEdit } = useContext(labelContext);
   const [chosenColor, setChosenColor] = useState(labelTobeEdit.color);
@@ -25,13 +25,14 @@ export default function EditOneLabel({ todoid }) {
       .then((res) => {
         if (res.status == 200) {
           const l = res.data;
-          console.log(l);
-          setUsedLabels((prev) => {
-            prev.map((label) => (label.id === l.id ? l : label));
-          });
-          setLabels((prev) => {
-            prev.map((label) => (label.id === l.id ? l : label));
-          });
+          setUsedLabels((prev) =>
+            prev.map((label) => (label.id === l.id ? l : label))
+          );
+          setLabels((prev) =>
+            prev.map((label) => (label.id === l.id ? l : label))
+          );
+          console.log("after update in edit one label component");
+          console.log(usedLabels);
         } else {
           alert("fail to update");
           console.log(res);
@@ -40,7 +41,7 @@ export default function EditOneLabel({ todoid }) {
       .catch((e) => {
         console.log(e);
       })
-      .finally(setSelect(true));
+      .finally(() => setSelect(true));
   };
 
   const handleDelete = () => {
@@ -51,7 +52,7 @@ export default function EditOneLabel({ todoid }) {
           setUsedLabels((prev) =>
             prev.filter((label) => label.id !== labelTobeEdit.id)
           );
-          setLables((prev) =>
+          setLabels((prev) =>
             prev.filter((label) => label.id !== labelTobeEdit.id)
           );
         } else {

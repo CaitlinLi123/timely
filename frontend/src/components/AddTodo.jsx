@@ -8,7 +8,7 @@ import { todoApi } from "../axios";
 export default function AddTodo({ setShowAdd }) {
   const { setTodos } = useContext(todoContext);
   const { user } = useAuth();
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("Your task description");
   const [priority, setPriority] = useState("HIGH");
   const [date, setDate] = useState(new Date().toISOString()); // Format for date input
   const [status, setStatus] = useState("PENDING");

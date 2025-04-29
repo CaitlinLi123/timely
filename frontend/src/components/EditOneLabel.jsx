@@ -3,19 +3,15 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { todoContext } from "../page/HomePage";
 import { useContext } from "react";
 import { labelApi } from "../axios";
+import { labelContext } from "./EditLabels";
+import { editContext } from "./Todo";
+import { useAuth } from "../AuthContext";
 
-export default function EditOneLabel({
-  labelTobeEdit,
-  setLabelTobeEdit,
-  setSelect,
-  setUsedLabels,
-  usedLabels,
-  labels,
-  setLables,
-  user,
-  todoid,
-}) {
-  const { colors } = useContext(todoContext);
+export default function EditOneLabel({ todoid }) {
+  const { user } = useAuth();
+  const { setUsedLabels } = useContext(editContext);
+  const { colors, setLables } = useContext(todoContext);
+  const { setSelect, labelTobeEdit } = useContext(labelContext);
   const [chosenColor, setChosenColor] = useState(labelTobeEdit.color);
   const [newLabel, setNewLabel] = useState(labelTobeEdit.name);
 

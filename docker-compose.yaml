@@ -1,0 +1,28 @@
+version: "3"
+services:
+  frontend:
+    image: "${DOCKER_USER}/timely-frontend"
+    # mem_limit: 128m
+    hostname: frontend
+  auth:
+    image: "${DOCKER_USER}/timely-auth"
+    # mem_limit: 128m
+    hostname: auth
+    env_file:
+      - .env
+      
+  task:
+    image: "${DOCKER_USER}/timely-task"
+    # mem_limit: 128m
+    hostname: task
+  
+  nginx:
+    image: "${DOCKER_USER}/timely-nginx"
+    mem_limit: 128m
+    hostname: nginx
+    depends_on:
+      - frontend
+      - task
+      - auth
+    ports:
+      - "80:80"

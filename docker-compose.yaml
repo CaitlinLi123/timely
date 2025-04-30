@@ -1,83 +1,44 @@
+version: "3"
 services:
-  task-service:
-    build: 
-      context: ./backend/task
-      dockerfile: Dockerfile
-    container_name: task-service
-    env_file:
-      - .env
-    depends_on:
-      task-db:
-        condition: service_healthy
-    ports:
-      - "8000:8000"
-    networks:
-      - todo-network
-
-  user-service:
-    build: 
-      context: ./backend/user
-      dockerfile: Dockerfile
-    container_name: user-service
-    env_file:
-      - .env
-    depends_on:
-      user-db:
-        condition: service_healthy
-    ports:
-      - "5000:5000"
-    networks:
-      - todo-network
-
-  task-db:
-    image: postgres:latest
-    container_name: postgres-taskdb
-    environment:
-      POSTGRES_DB: taskdb
-      POSTGRES_USER: ${PG_USERNAME}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d taskdb"]
-      interval: 10s
-      retries: 5
-      start_period: 10s
-    ports:
-      - "5433:5432"  # Avoid conflict with user-db
-    networks:
-      - todo-network
-
-  user-db:
-    image: postgres:latest
-    container_name: postgres-userdb
-    environment:
-      POSTGRES_DB: userdb
-      POSTGRES_USER: ${PG_USERNAME}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d userdb"]
-      interval: 10s
-      retries: 5
-      start_period: 10s
-    ports:
-      - "5434:5432"  # Avoid conflict with task-db
-    networks:
-      - todo-network
-
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: frontend
-    depends_on:
-      task-service:
-        condition: service_started
-      user-service:
-        condition: service_started
-    ports:
-      - "5173:5173"
-    networks:
-      - todo-network
+    image: "${DOCKER_USER}/timely-frontend"
+    hostname: frontend
+  auth:
+    image: "${DOCKER_USER}/timely-auth"
+    hostname: auth
+    environment:
+      - PG_USER_URL=${PG_USER_URL}
+      - PG_USERNAME=${PG_USERNAME}
+      - PG_PASSWORD=${PG_PASSWORD}
 
-networks:
-  todo-network:
-    driver: bridge
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI}
+
+      - SPRING_MAIL_HOST=${SPRING_MAIL_HOST}
+      - SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}
+      - SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
+
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRE=${JWT_EXPIRE}
+      - RECOVERY_SECRET=${RECOVERY_SECRET}
+      - AUTH_PORT=${AUTH_PORT}
+      
+  task:
+    image: "${DOCKER_USER}/timely-task"
+    hostname: task
+    environment:
+      - PG_TASK_URL=${PG_TASK_URL}
+      - PG_USERNAME=${PG_USERNAME}
+      - PG_PASSWORD=${PG_PASSWORD}
+      - TASK_PORT=${TASK_PORT}
+  nginx:
+    image: "${DOCKER_USER}/timely-nginx"
+    mem_limit: 128m
+    hostname: nginx
+    depends_on:
+      - frontend
+      - task
+      - auth
+    ports:
+      - "80:80"

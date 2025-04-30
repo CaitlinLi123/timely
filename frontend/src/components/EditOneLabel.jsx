@@ -2,38 +2,37 @@ import React, { useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { todoContext } from "../page/HomePage";
 import { useContext } from "react";
-import { LabelApi } from "../axios";
+import { labelApi } from "../axios";
+import { labelContext } from "./EditLabels";
+import { editContext } from "./Todo";
+import { useAuth } from "../AuthContext";
 
-export default function EditOneLabel({
-  labelTobeEdit,
-  setLabelTobeEdit,
-  setSelect,
-  setUsedLabels,
-  usedLabels,
-  labels,
-  setLables,
-  user,
-  todoid,
-}) {
-  const { colors } = useContext(todoContext);
+export default function EditOneLabel({ todoid }) {
+  const { user } = useAuth();
+  const { setUsedLabels, usedLabels } = useContext(editContext);
+  const { colors, setLabels } = useContext(todoContext);
+  const { setSelect, labelTobeEdit } = useContext(labelContext);
   const [chosenColor, setChosenColor] = useState(labelTobeEdit.color);
   const [newLabel, setNewLabel] = useState(labelTobeEdit.name);
 
   const handleClick = () => {
-    LabelApi.put(`/${todoid}/update`, {
-      color: chosenColor,
-      name: newLabel,
-      username: user.username,
-    })
+    labelApi
+      .put(`/${todoid}`, {
+        color: chosenColor,
+        name: newLabel,
+        username: user.username,
+      })
       .then((res) => {
         if (res.status == 200) {
           const l = res.data;
-          setUsedLabels((prev) => {
-            prev.map((label) => (label.id === l.id ? l : label));
-          });
-          setLables((prev) => {
-            prev.map((label) => (label.id === l.id ? l : label));
-          });
+          setUsedLabels((prev) =>
+            prev.map((label) => (label.id === l.id ? l : label))
+          );
+          setLabels((prev) =>
+            prev.map((label) => (label.id === l.id ? l : label))
+          );
+          console.log("after update in edit one label component");
+          console.log(usedLabels);
         } else {
           alert("fail to update");
           console.log(res);
@@ -42,17 +41,18 @@ export default function EditOneLabel({
       .catch((e) => {
         console.log(e);
       })
-      .finally(setSelect(true));
+      .finally(() => setSelect(true));
   };
 
   const handleDelete = () => {
-    LabelApi.delete(`/${labelTobeEdit.id}`, labelTobeEdit)
+    labelApi
+      .delete(`/${labelTobeEdit.id}`, labelTobeEdit)
       .then((res) => {
         if (res.status == 200) {
           setUsedLabels((prev) =>
             prev.filter((label) => label.id !== labelTobeEdit.id)
           );
-          setLables((prev) =>
+          setLabels((prev) =>
             prev.filter((label) => label.id !== labelTobeEdit.id)
           );
         } else {

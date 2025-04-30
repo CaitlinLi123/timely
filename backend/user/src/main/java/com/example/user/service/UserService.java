@@ -1,19 +1,10 @@
 package com.example.user.service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -234,7 +225,7 @@ public class UserService {
                         <p>Hello,</p>
                         <p>Click the link below to reset your password:</p>
                         <a href=
-                        "http://localhost:5173/reset?token=
+                        "http://localhost/reset?token=
                         """ + token +
                         """
                                 ">Reset Password</a>

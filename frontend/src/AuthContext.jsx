@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import axios from "./axios";
+import { authApi } from "./axios";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const AuthContext = createContext();
@@ -18,9 +18,8 @@ export const AuthProvider = ({ children }) => {
   const location = useLocation();
 
   const validate = () => {
-    // console.log("start to validate...");
-    axios
-      .get("http://localhost:5000/validate", { withCredentials: true })
+    authApi
+      .get("/validate", { withCredentials: true })
       .then((res) => {
         let userFound = res.data.user;
         if (userFound != null) {

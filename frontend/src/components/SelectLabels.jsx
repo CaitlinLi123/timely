@@ -18,7 +18,7 @@ export default function SelectLabels({ todoid }) {
 
   const handleClick = () => {
     todoApi
-      .patch(`/todo/${todoid}/label`, tmpLabels)
+      .patch(`/${todoid}/label`, tmpLabels)
       .then((res) => {
         if (res.status === 200) {
           setUsedLabels(tmpLabels);
@@ -105,7 +105,6 @@ export default function SelectLabels({ todoid }) {
                   style={{ backgroundColor: label.color }}
                   className="px-2 rounded-lg"
                 >
-                  {" "}
                   {label.name}
                 </label>
                 <span

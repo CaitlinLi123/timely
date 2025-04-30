@@ -20,5 +20,9 @@ services:
     image: "${DOCKER_USER}/timely-nginx"
     mem_limit: 128m
     hostname: nginx
+    depends_on:
+      - frontend
+      - task
+      - auth
     ports:
       - "80:80"
